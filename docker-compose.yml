@@ -1,0 +1,16 @@
+contents:
+    image: gwangjang/contents
+    depends_on:
+      - eureka
+      - apigateway
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka:8761/eureka/
+    ports:
+      - 8084:8084
+    networks:
+      - msa-network
+    build: ./ContentsService
+
+networks:
+  msa-network:
+    external: true
