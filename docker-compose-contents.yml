@@ -2,11 +2,15 @@ version: '3'
 services:
   apigateway:
     image: gwangjang/apigateway
+    ports:
+      - 8888:8888
     networks:
       - msa-network
 
   eureka:
     image: gwangjang/eureka:latest
+    ports:
+      - 8761:8761
     networks:
       - msa-network
 
@@ -21,7 +25,6 @@ services:
       - 8084:8084
     networks:
       - msa-network
-    build: ./ContentsService
 
 networks:
   msa-network:
