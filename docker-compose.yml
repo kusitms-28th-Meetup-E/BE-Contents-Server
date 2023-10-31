@@ -1,4 +1,16 @@
-contents:
+version: '3'
+services:
+  apigateway:
+    image: gwangjang/apigateway
+    networks:
+      - msa-network
+
+  eureka:
+    image: gwangjang/eureka:latest
+    networks:
+      - msa-network
+
+  contents:
     image: gwangjang/contents
     depends_on:
       - eureka
