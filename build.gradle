@@ -77,8 +77,3 @@ tasks.named('test') {
 	useJUnitPlatform()
 }
 
-bootJar{
-	archivesBaseName = 'contentsService'
-	archiveFileName = 'contentsService.jar'
-	archiveVersion = "0.0.1"
-}
