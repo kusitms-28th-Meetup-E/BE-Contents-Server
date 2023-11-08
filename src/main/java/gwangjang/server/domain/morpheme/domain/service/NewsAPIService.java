@@ -2,10 +2,15 @@ package gwangjang.server.domain.morpheme.domain.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
+import gwangjang.server.domain.morpheme.domain.entity.Morpheme;
+import gwangjang.server.domain.morpheme.domain.repository.MorphemeRepository;
+import gwangjang.server.global.annotation.DomainService;
+import jakarta.transaction.Transactional;
 import kr.co.shineware.nlp.komoran.constant.DEFAULT_MODEL;
 import kr.co.shineware.nlp.komoran.core.Komoran;
 import kr.co.shineware.nlp.komoran.model.KomoranResult;
 import kr.co.shineware.nlp.komoran.model.Token;
+import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -14,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,8 +32,10 @@ import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
-@RestController
-@RequestMapping("/")
+
+@DomainService
+@Transactional
+@RequiredArgsConstructor
 public class NewsAPIService {
     @Value("${naver.client-id}")
     private String NAVER_API_ID;
@@ -36,6 +44,9 @@ public class NewsAPIService {
     private String NAVER_API_SECRET;
     private final RestTemplate restTemplate;
     ObjectMapper objectMapper = new ObjectMapper();
+
+
+
     @Autowired
     public NewsAPIService(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
@@ -103,4 +114,5 @@ public class NewsAPIService {
         }
         return tokenList.get(0).getMorph();
     }
+
 }

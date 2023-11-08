@@ -4,13 +4,15 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-public class morpheme {
+@Setter
+public class Morpheme {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "morpheme_id")
