@@ -60,7 +60,7 @@ public class NewsAPIService {
                 .queryParam("query", name) //query=검색어&display=10&start=1&sort=random
                 .queryParam("display", 100)
                 .queryParam("start", 1)
-                .queryParam("sort", "date")
+                .queryParam("sort", "sim")
                 .encode(StandardCharsets.UTF_8)
                 .build()
                 .toUri();

@@ -32,7 +32,7 @@ public class MorphemeService {
                 newWord.setWord(word);
                 System.out.println("else save         " +word);
                 newWord.setCount(1);
-                newWord.setIssueId(1);
+                newWord.setIssueId(20);
                 morphemeRepository.save(newWord);
             }
         }
