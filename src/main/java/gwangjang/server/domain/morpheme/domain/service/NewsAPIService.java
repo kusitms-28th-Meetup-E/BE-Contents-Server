@@ -52,7 +52,7 @@ public class NewsAPIService {
         this.restTemplate = restTemplate;
     }
 
-    @GetMapping("/naver/{name}")
+
     public String naverAPI(@PathVariable String name) throws JsonProcessingException {
         name = "쿠팡 에어컨";
         URI uri = UriComponentsBuilder
@@ -75,7 +75,7 @@ public class NewsAPIService {
         ResponseEntity<String> result = restTemplate.exchange(req, String.class);
         String json = result.getBody();
         System.out.println(json);
-
+        StringBuilder rslt = new StringBuilder();
         try {
             JSONParser parser = new JSONParser();
             JSONObject jsonData = (JSONObject) parser.parse(json);
@@ -90,17 +90,19 @@ public class NewsAPIService {
                 System.out.println("Title: " + title);
                 System.out.println("Description: " + description);
                 System.out.println();
-                analysis(title+description);
 
+                rslt.append("Title: ").append(title);
+                rslt.append("Description: ").append(description);
             }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
 
 
-        return result.getBody();
+        return rslt.toString();
     }
-    public String analysis(String msg) {
+    public List<Token> analysis(String msg) {
 
         Komoran komoran = new Komoran(DEFAULT_MODEL.FULL);
         KomoranResult analyzeResultList = komoran.analyze(msg);
@@ -112,7 +114,7 @@ public class NewsAPIService {
         for (Token token : tokenList) {
             System.out.format("%s\n", token.getMorph());
         }
-        return tokenList.get(0).getMorph();
+        return tokenList;
     }
 
 }
