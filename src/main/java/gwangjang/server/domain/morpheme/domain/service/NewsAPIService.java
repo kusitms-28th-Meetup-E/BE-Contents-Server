@@ -2,6 +2,10 @@ package gwangjang.server.domain.morpheme.domain.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
+import kr.co.shineware.nlp.komoran.constant.DEFAULT_MODEL;
+import kr.co.shineware.nlp.komoran.core.Komoran;
+import kr.co.shineware.nlp.komoran.model.KomoranResult;
+import kr.co.shineware.nlp.komoran.model.Token;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -20,6 +24,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 @RestController
 @RequestMapping("/")
@@ -38,12 +43,12 @@ public class NewsAPIService {
 
     @GetMapping("/naver/{name}")
     public String naverAPI(@PathVariable String name) throws JsonProcessingException {
-        name = "쿠팡 에어";
+        name = "쿠팡 에어컨";
         URI uri = UriComponentsBuilder
                 .fromUriString("https://openapi.naver.com/")
                 .path("/v1/search/news.json")
                 .queryParam("query", name) //query=검색어&display=10&start=1&sort=random
-                .queryParam("display", 3)
+                .queryParam("display", 100)
                 .queryParam("start", 1)
                 .queryParam("sort", "date")
                 .encode(StandardCharsets.UTF_8)
@@ -74,6 +79,8 @@ public class NewsAPIService {
                 System.out.println("Title: " + title);
                 System.out.println("Description: " + description);
                 System.out.println();
+                analysis(title+description);
+
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -81,5 +88,19 @@ public class NewsAPIService {
 
 
         return result.getBody();
+    }
+    public String analysis(String msg) {
+
+        Komoran komoran = new Komoran(DEFAULT_MODEL.FULL);
+        KomoranResult analyzeResultList = komoran.analyze(msg);
+
+        System.out.println(analyzeResultList.getPlainText());
+
+        List<Token> tokenList = analyzeResultList.getTokenList();
+
+        for (Token token : tokenList) {
+            System.out.format("%s\n", token.getMorph());
+        }
+        return tokenList.get(0).getMorph();
     }
 }
