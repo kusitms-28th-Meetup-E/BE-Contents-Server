@@ -35,7 +35,6 @@ import java.util.List;
 
 @DomainService
 @Transactional
-@RequiredArgsConstructor
 public class NewsAPIService {
     @Value("${naver.client-id}")
     private String NAVER_API_ID;
@@ -53,8 +52,8 @@ public class NewsAPIService {
     }
 
 
-    public String naverAPI(@PathVariable String name) throws JsonProcessingException {
-        name = "쿠팡 에어컨";
+    public String naverAPI(String name) throws JsonProcessingException {
+
         URI uri = UriComponentsBuilder
                 .fromUriString("https://openapi.naver.com/")
                 .path("/v1/search/news.json")
@@ -86,13 +85,8 @@ public class NewsAPIService {
 
                 String title = (String) item.get("title");
                 String description = (String) item.get("description");
-
-                System.out.println("Title: " + title);
-                System.out.println("Description: " + description);
-                System.out.println();
-
-                rslt.append("Title: ").append(title);
-                rslt.append("Description: ").append(description);
+                rslt.append(title);
+                rslt.append(description);
             }
 
         } catch (Exception e) {
