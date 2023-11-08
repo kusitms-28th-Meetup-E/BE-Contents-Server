@@ -13,6 +13,7 @@ java {
 
 repositories {
 	mavenCentral()
+	maven { url 'https://jitpack.io' }
 }
 
 ext {
@@ -64,7 +65,11 @@ dependencies {
 
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
+	// 형태소
+	implementation 'com.github.shin285:KOMORAN:3.3.4'
 
+	implementation 'org.json:json:20210307'
+	implementation 'com.googlecode.json-simple:json-simple:1.1'
 }
 
 dependencyManagement {
