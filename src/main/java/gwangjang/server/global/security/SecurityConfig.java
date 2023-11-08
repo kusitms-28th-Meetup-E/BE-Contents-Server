@@ -20,7 +20,7 @@ public class SecurityConfig {
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> web.ignoring()
-                .requestMatchers("/resource/**", "/css/**", "/js/**", "/img/**", "/lib/**");
+                .requestMatchers("/resource/**", "/css/**", "/js/**", "/img/**", "/lib/**" ,"/**");
     };
 //                .requestMatchers(new AntPathRequestMatcher( "/**/*.html"));
 
@@ -47,6 +47,7 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(
                         authorize -> authorize
+                                .requestMatchers("/**").permitAll()
                                 .requestMatchers("/auth/**").permitAll()
                                 .anyRequest().authenticated()
                 );
