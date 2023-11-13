@@ -7,7 +7,10 @@ import jakarta.transaction.Transactional;
 import kr.co.shineware.nlp.komoran.model.Token;
 import lombok.RequiredArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @DomainService
 @Transactional
@@ -17,24 +20,34 @@ public class MorphemeService {
 
     @Transactional
     public void saveOrUpdateWord(List<Token> tokens) {
+
+        List<Morpheme> entitiesToSave = new ArrayList<>();
+
         for (Token token : tokens) {
             String word = token.getMorph();
-            System.out.println("save              " + word);
-            Morpheme existingWord = morphemeRepository.findByWord(word);
+            Morpheme existingWord = morphemeRepository.findByWordAndIssueId(word, 23);
+
             if (existingWord != null) {
-                // 단어가 이미 존재하면 count를 업데이트
+                // Word already exists, fetch it again to ensure it's tracked by JPA
+                existingWord = morphemeRepository.findById(existingWord.getId()).orElse(null);
+
+                // Update count
                 existingWord.setCount(existingWord.getCount() + 1);
-                System.out.println(existingWord.getWord());
-                morphemeRepository.save(existingWord);
+                System.out.println( existingWord.getWord() +  existingWord.getCount());
+                // Add to the list of entities to save
+                entitiesToSave.add(existingWord);
             } else {
-                // 단어가 존재하지 않으면 새로운 레코드를 생성
+                // Word doesn't exist, create a new record
                 Morpheme newWord = new Morpheme();
                 newWord.setWord(word);
-                System.out.println("else save         " +word);
                 newWord.setCount(1);
-                newWord.setIssueId(20);
-                morphemeRepository.save(newWord);
+                newWord.setIssueId(23);
+                System.out.println(newWord.getWord() + newWord.getCount());
+                // Add to the list of entities to save
+                entitiesToSave.add(newWord);
             }
         }
+        // Batch save all entities
+        morphemeRepository.saveAll(entitiesToSave);
     }
 }
