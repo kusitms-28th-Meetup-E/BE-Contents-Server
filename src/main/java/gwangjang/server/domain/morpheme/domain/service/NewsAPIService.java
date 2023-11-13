@@ -54,48 +54,52 @@ public class NewsAPIService {
 
     public String naverAPI(String name) throws JsonProcessingException {
 
-        URI uri = UriComponentsBuilder
-                .fromUriString("https://openapi.naver.com/")
-                .path("/v1/search/news.json")
-                .queryParam("query", name) //query=검색어&display=10&start=1&sort=random
-                .queryParam("display", 100)
-                .queryParam("start", 1)
-                .queryParam("sort", "sim")
-                .encode(StandardCharsets.UTF_8)
-                .build()
-                .toUri();
-
-        RequestEntity<Void> req = RequestEntity
-                .get(uri)
-                .header("X-Naver-Client-Id", NAVER_API_ID)
-                .header("X-Naver-Client-Secret", NAVER_API_SECRET)
-                .build();
-
-        ResponseEntity<String> result = restTemplate.exchange(req, String.class);
-        String json = result.getBody();
-        System.out.println(json);
         StringBuilder rslt = new StringBuilder();
-        try {
-            JSONParser parser = new JSONParser();
-            JSONObject jsonData = (JSONObject) parser.parse(json);
-            JSONArray items = (JSONArray) jsonData.get("items");
 
-            for (Object obj : items) {
-                JSONObject item = (JSONObject) obj;
+        for (int start = 1; start <= 1000; start += 100) {
+            URI uri = UriComponentsBuilder
+                    .fromUriString("https://openapi.naver.com/")
+                    .path("/v1/search/news.json")
+                    .queryParam("query", name)
+                    .queryParam("display", 100)
+                    .queryParam("start", start)
+                    .queryParam("sort", "sim")
+                    .encode(StandardCharsets.UTF_8)
+                    .build()
+                    .toUri();
 
-                String title = (String) item.get("title");
-                String description = (String) item.get("description");
-                rslt.append(title);
-                rslt.append(description);
+            RequestEntity<Void> req = RequestEntity
+                    .get(uri)
+                    .header("X-Naver-Client-Id", NAVER_API_ID)
+                    .header("X-Naver-Client-Secret", NAVER_API_SECRET)
+                    .build();
+
+            ResponseEntity<String> result = restTemplate.exchange(req, String.class);
+            String json = result.getBody();
+            System.out.println(json);
+
+            try {
+                JSONParser parser = new JSONParser();
+                JSONObject jsonData = (JSONObject) parser.parse(json);
+                JSONArray items = (JSONArray) jsonData.get("items");
+
+                for (Object obj : items) {
+                    JSONObject item = (JSONObject) obj;
+
+                    String title = (String) item.get("title");
+                    String description = (String) item.get("description");
+                    rslt.append(title);
+                    rslt.append(description);
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-
-        } catch (Exception e) {
-            e.printStackTrace();
         }
-
 
         return rslt.toString();
     }
+
     public List<Token> analysis(String msg) {
 
         Komoran komoran = new Komoran(DEFAULT_MODEL.FULL);

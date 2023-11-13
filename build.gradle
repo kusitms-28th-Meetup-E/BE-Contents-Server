@@ -74,6 +74,9 @@ dependencies {
 
 	implementation group: 'io.springfox', name: 'springfox-boot-starter', version: '3.0.0' // 사용 가능한 최신 버전으로 업데이트하세요
 
+	//spring batch
+	implementation 'org.springframework.boot:spring-boot-starter-batch'
+
 }
 
 dependencyManagement {
