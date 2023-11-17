@@ -56,13 +56,12 @@ public class NewsAPIService {
 
         StringBuilder rslt = new StringBuilder();
 
-        for (int start = 1; start <= 1000; start += 100) {
             URI uri = UriComponentsBuilder
                     .fromUriString("https://openapi.naver.com/")
                     .path("/v1/search/news.json")
                     .queryParam("query", name)
-                    .queryParam("display", 100)
-                    .queryParam("start", start)
+                    .queryParam("display", 20)
+                    .queryParam("start", 1)
                     .queryParam("sort", "sim")
                     .encode(StandardCharsets.UTF_8)
                     .build()
@@ -88,6 +87,7 @@ public class NewsAPIService {
 
                     String title = (String) item.get("title");
                     String description = (String) item.get("description");
+                    String url = (String) item.get("originallink");
                     rslt.append(title);
                     rslt.append(description);
                 }
@@ -95,24 +95,8 @@ public class NewsAPIService {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }
 
         return rslt.toString();
-    }
-
-    public List<Token> analysis(String msg) {
-
-        Komoran komoran = new Komoran(DEFAULT_MODEL.FULL);
-        KomoranResult analyzeResultList = komoran.analyze(msg);
-
-        System.out.println(analyzeResultList.getPlainText());
-
-        List<Token> tokenList = analyzeResultList.getTokenList();
-
-        for (Token token : tokenList) {
-            System.out.format("%s\n", token.getMorph());
-        }
-        return tokenList;
     }
 
 }

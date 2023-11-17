@@ -14,7 +14,9 @@ java {
 repositories {
 	mavenCentral()
 	maven { url 'https://jitpack.io' }
+	maven { url 'https://google-api-client-libraries.appspot.com/mavenrepo' }
 }
+
 
 ext {
 	set('springCloudVersion', "2022.0.4")
@@ -59,6 +61,7 @@ dependencies {
 	// WebClient
 	implementation 'org.springframework.boot:spring-boot-starter-webflux'
 
+
 	// Feign
 	implementation 'io.github.openfeign:feign-httpclient:12.1'
 	implementation 'org.springframework.cloud:spring-cloud-starter-openfeign:3.1.4'
@@ -76,6 +79,11 @@ dependencies {
 
 	//spring batch
 	implementation 'org.springframework.boot:spring-boot-starter-batch'
+
+	//youtube
+	implementation 'com.google.api-client:google-api-client:1.30.9'
+	implementation 'com.google.oauth-client:google-oauth-client-jetty:1.23.0'
+	implementation 'com.google.apis:google-api-services-youtube:v3-rev222-1.25.0'
 
 }
 
