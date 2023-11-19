@@ -23,7 +23,7 @@ public class Contents extends BaseEntity {
     ApiType type;
 
     private String issueTitle;
-
+    private String pubDate;
     public Contents(String url, String title, String description) {
         this.url = url;
         this.title = title;
