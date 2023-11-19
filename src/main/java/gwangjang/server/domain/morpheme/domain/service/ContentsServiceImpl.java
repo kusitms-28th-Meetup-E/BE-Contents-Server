@@ -126,7 +126,7 @@ public class ContentsServiceImpl implements ContentsService {
         }
     }
 
-    public List<Contents> getYoutubeContents() {
-        return contentsRepository.findAll();
+    public List<Contents> getContents(ApiType type) {
+        return contentsRepository.findByType(type);
     }
 }

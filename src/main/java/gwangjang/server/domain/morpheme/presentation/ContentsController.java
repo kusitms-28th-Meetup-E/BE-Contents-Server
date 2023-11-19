@@ -3,12 +3,14 @@ package gwangjang.server.domain.morpheme.presentation;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import gwangjang.server.domain.morpheme.application.dto.req.TotalReq;
 import gwangjang.server.domain.morpheme.domain.entity.Contents;
+import gwangjang.server.domain.morpheme.domain.entity.constant.ApiType;
 import gwangjang.server.domain.morpheme.domain.service.ContentsService;
 import gwangjang.server.domain.morpheme.domain.service.NewsAPIService;
 import gwangjang.server.global.feign.client.FindKeywordFeignClient;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
@@ -94,9 +96,9 @@ public class ContentsController {
         return contentsService.saveYoutubeContent(issue);
     }
 
-    @GetMapping("/youtube/contents")
-    public  List<Contents> getYoutubeContents(){
-        return contentsService.getYoutubeContents();
+    @GetMapping("/contents/{type}")
+    public  List<Contents> getYoutubeContents(@PathVariable ApiType type){
+        return contentsService.getContents(type);
     }
 
 
