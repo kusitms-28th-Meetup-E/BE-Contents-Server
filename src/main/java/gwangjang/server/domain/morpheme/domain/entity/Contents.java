@@ -31,4 +31,11 @@ public class Contents extends BaseEntity {
     }
 
 
+    public Contents(String title, String description, String url, String pubDate, String issueTitle) {
+        this.url = url;
+        this.title = title;
+        this.description = description;
+        this.pubDate = pubDate;
+        this.issueTitle = issueTitle;
+    }
 }
