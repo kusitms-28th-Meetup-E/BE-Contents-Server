@@ -134,5 +134,9 @@ public class ContentsServiceImpl implements ContentsService {
         return contentsRepository.findByIssueTitleLike("%" + issue + "%");
     }
 
+    public List<Contents> getKeywordAndType(String Keyword, ApiType apiType) {
+        return contentsRepository.findByIssueTitleLikeAndType("%" + Keyword + "%", apiType);
+    }
+
 
 }
