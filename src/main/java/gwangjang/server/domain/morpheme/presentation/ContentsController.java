@@ -106,4 +106,9 @@ public class ContentsController {
     public String getNaverContents() throws JsonProcessingException {
         return newsAPIService.naverAPI("test");
     }
+
+    @GetMapping("/issueTitle/{issue}")
+    public List<Contents> getContentsTitle(@PathVariable String issue) throws JsonProcessingException {
+        return contentsService.getContentsTitle(issue);
+    }
 }
