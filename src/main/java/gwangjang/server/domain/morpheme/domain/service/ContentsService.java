@@ -14,5 +14,6 @@ public interface ContentsService {
     public Mono<Void> saveYoutubeContent(String[] search);
     public List<Contents> getContents(ApiType type);
     List<Contents> getContentsTitle(String issue);
+    List<Contents> getKeywordAndType(String Keyword, ApiType apiType);
 }
 
