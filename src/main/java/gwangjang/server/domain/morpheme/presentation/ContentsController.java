@@ -1,18 +1,16 @@
 package gwangjang.server.domain.morpheme.presentation;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import gwangjang.server.domain.morpheme.application.dto.req.TotalReq;
+import gwangjang.server.domain.morpheme.domain.entity.Contents;
+import gwangjang.server.domain.morpheme.domain.entity.constant.ApiType;
 import gwangjang.server.domain.morpheme.domain.service.ContentsService;
+import gwangjang.server.domain.morpheme.domain.service.NewsAPIService;
 import gwangjang.server.global.feign.client.FindKeywordFeignClient;
-import gwangjang.server.global.response.SuccessResponse;
-import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
@@ -25,9 +23,13 @@ public class ContentsController {
     private final ContentsService contentsService;
     private final FindKeywordFeignClient findKeywordFeignClient;
 
+    private final NewsAPIService newsAPIService;
+
     @GetMapping("/keyword/test")
     //@Scheduled(cron = "0 0 0 * * *")
-    public ResponseEntity<SuccessResponse<List<TotalReq>>> getKeyword (){
+    public String getKeyword () throws JsonProcessingException {
+        Mono<Void> a = null;
+        String b = null;
         // 이 부분에서 findKeywordFeignClient.getAll() 호출하고 결과를 받아온다고 가정합니다.
         List<TotalReq> keywordList = findKeywordFeignClient.getAll().getBody().getData();
         StringBuilder resultStringBuilder = new StringBuilder();
@@ -36,10 +38,9 @@ public class ContentsController {
             String combinedString = issueData.getIssueTitle() + " " + issueData.getKeyword();
             resultStringBuilder.append(combinedString).append("\n");
         }
-
         // 결과 문자열 출력
         String resultString = resultStringBuilder.toString().trim();
-        System.out.println(resultString);
+
 //        // issueId가 같은 경우에 issueTitle과 keyword를 조합하여 msg를 만듭니다.
 //        StringBuilder msgBuilder = new StringBuilder();
 //        Long currentIssueId = -1L;  // 초기값으로 사용되지 않을 값으로 설정
@@ -78,11 +79,31 @@ public class ContentsController {
 //            System.out.println(sentence);
 //
 //        }
-        analysis(resultString);
-        return findKeywordFeignClient.getAll();
+
+        String[] sentences = resultString.split("\n");
+       // a = analysis(sentences);
+        for(String sentence : sentences) {
+           b += newsAPIService.naverAPI(sentence);
+        }
+        //System.out.println(resultString);
+        //contentsService.saveYoutubeContent(sentences);
+
+        return b;
     }
 
-    public Mono<Void> analysis(String issue) {
+//    @GetMapping("/test")
+    public Mono<Void> analysis(String[] issue) {
         return contentsService.saveYoutubeContent(issue);
+    }
+
+    @GetMapping("/contents/{type}")
+    public  List<Contents> getYoutubeContents(@PathVariable ApiType type){
+        return contentsService.getContents(type);
+    }
+
+
+    @GetMapping("/naver/contents")
+    public String getNaverContents() throws JsonProcessingException {
+        return newsAPIService.naverAPI("test");
     }
 }
