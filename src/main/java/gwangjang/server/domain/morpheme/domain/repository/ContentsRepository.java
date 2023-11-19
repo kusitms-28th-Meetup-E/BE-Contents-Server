@@ -11,5 +11,6 @@ import java.util.List;
 public interface ContentsRepository extends JpaRepository<Contents, Integer> {
 
     List<Contents> findByType(ApiType type);
+    List<Contents> findByIssueTitleLike(String issue);
 
 }

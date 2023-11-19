@@ -129,4 +129,10 @@ public class ContentsServiceImpl implements ContentsService {
     public List<Contents> getContents(ApiType type) {
         return contentsRepository.findByType(type);
     }
+
+    public List<Contents> getContentsTitle(String issue) {
+        return contentsRepository.findByIssueTitleLike("%" + issue + "%");
+    }
+
+
 }
