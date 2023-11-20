@@ -21,7 +21,7 @@ import reactor.core.publisher.Mono;
 import java.util.List;
 
 @RestController
-@AllArgsConstructor(onConstructor_ = {@Autowired})
+@AllArgsConstructor
 public class ContentsController {
 
     private final ContentsService contentsService;
