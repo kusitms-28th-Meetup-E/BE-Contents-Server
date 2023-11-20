@@ -2,7 +2,9 @@ package gwangjang.server.domain.morpheme.presentation;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import gwangjang.server.domain.morpheme.application.dto.req.TotalReq;
-import gwangjang.server.domain.morpheme.application.dto.res.ContentsRes;
+import gwangjang.server.domain.morpheme.application.dto.res.ContentsDataRes;
+import gwangjang.server.domain.morpheme.application.service.ContentsSubscribeUseCase;
+
 import gwangjang.server.domain.morpheme.domain.entity.Contents;
 import gwangjang.server.domain.morpheme.domain.entity.constant.ApiType;
 import gwangjang.server.domain.morpheme.domain.service.ContentsService;
@@ -11,21 +13,28 @@ import gwangjang.server.domain.morpheme.presentation.constant.ContentsResponseMe
 import gwangjang.server.global.feign.client.FindKeywordFeignClient;
 import gwangjang.server.global.response.SuccessResponse;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
 
+import static gwangjang.server.domain.morpheme.presentation.constant.ContentsResponse.GET_MY_CONTENTS;
+
 @RestController
 @AllArgsConstructor(onConstructor_ = {@Autowired})
+//@RequiredArgsConstructor
 public class ContentsController {
 
     private final ContentsService contentsService;
     private final FindKeywordFeignClient findKeywordFeignClient;
+
+    private final ContentsSubscribeUseCase contentsSubscribeUseCase;
 
     private final NewsAPIService newsAPIService;
 
@@ -94,5 +103,11 @@ public class ContentsController {
 //
 //        return b;
 //    }
+
+
+    @GetMapping("/subscribe/{issue}")
+    public ResponseEntity<SuccessResponse<List<ContentsDataRes>>> getMySubscribe(@RequestHeader(value = "user-id") String socialId,@PathVariable("issue")String issue) {
+        return ResponseEntity.ok(SuccessResponse.create(GET_MY_CONTENTS.getMessage(), this.contentsSubscribeUseCase.getContentsByIssue(issue)));
+    }
 
 }

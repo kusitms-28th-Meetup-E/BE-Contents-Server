@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface ContentsRepository extends JpaRepository<Contents, Integer> {
+public interface ContentsRepository extends JpaRepository<Contents, Integer>,ContentsCustomRepository{
 
     List<Contents> findByType(ApiType type);
     List<Contents> findByIssueTitleLike(String issue);
