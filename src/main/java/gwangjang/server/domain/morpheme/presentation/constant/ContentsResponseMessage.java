@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum ContentsResponseMessage {
 
-    GET_CONTENTS_SUCCESS("이슈 조회 완료");
+    GET_CONTENTS_SUCCESS("컨텐츠 조회 완료");
 
     private final String message;
 

@@ -20,16 +20,18 @@ public class ContentsRes {
     private String issueTitle;
     private String keyword;
     private String pubDate;
+    private String topic;
 
-    public static Contents toEntity(ContentsRes contentsRes) {
-        return new Contents(
-                contentsRes.getUrl(),
-                contentsRes.getTitle(),
-                contentsRes.getDescription(),
-                contentsRes.getType(),
-                contentsRes.getIssueTitle(),
-                contentsRes.getKeyword(),
-                contentsRes.getPubDate()
-        );
+    public ContentsRes toDto(Contents contents) {
+        ContentsRes contentsDto = new ContentsRes();
+        contentsDto.setType(contents.getType());
+        contentsDto.setUrl(contents.getUrl());
+        contentsDto.setTitle(contents.getTitle());
+        contentsDto.setDescription(contents.getDescription());
+        contentsDto.setPubDate(contents.getPubDate());
+        contentsDto.setIssueTitle(contents.getIssueTitle());
+        contentsDto.setTopic(contents.getTopic());
+        return contentsDto;
     }
+
 }

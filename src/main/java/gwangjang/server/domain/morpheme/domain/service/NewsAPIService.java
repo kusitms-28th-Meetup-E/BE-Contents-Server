@@ -81,7 +81,7 @@ public class NewsAPIService {
                 contentsRes.setPubDate(pubDate);
                 contentsRes.setType(ApiType.NAVER);
                 contentsRes.setIssueTitle(name);
-                contentsRepository.save(contentsRes.toEntity(contentsRes));
+                contentsRepository.save(Contents.toEntity(contentsRes));
             }
         } catch (org.json.simple.parser.ParseException e) {
             // Handle the ParseException locally
