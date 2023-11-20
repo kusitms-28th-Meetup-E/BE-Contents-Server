@@ -135,7 +135,7 @@ public class ContentsServiceImpl implements ContentsService {
     }
 
     public List<Contents> getKeywordAndType(String Keyword, ApiType apiType) {
-        return contentsRepository.findByIssueTitleLikeAndTypeOrderByPubDateDesc("%" + Keyword + "%", apiType);
+        return contentsRepository.findByKeywordLikeAndTypeOrderByPubDateDesc("%" + Keyword + "%", apiType);
     }
 
     public Contents getContentsById(Integer contentsId) {

@@ -12,5 +12,5 @@ public interface ContentsRepository extends JpaRepository<Contents, Integer> {
 
     List<Contents> findByType(ApiType type);
     List<Contents> findByIssueTitleLike(String issue);
-    List<Contents> findByIssueTitleLikeAndTypeOrderByPubDateDesc(String issueTitle, ApiType type);
+    List<Contents> findByKeywordLikeAndTypeOrderByPubDateDesc(String issueTitle, ApiType type);
 }
