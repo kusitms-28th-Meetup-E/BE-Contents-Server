@@ -26,8 +26,9 @@ public enum ErrorCode {
     EMAIL_DUPLICATION_ERROR("AU0005", "닉네임이 중복됩니다."),
 
     NOT_FOUND_BY_LOGIN_ID_ERROR("L001","해당 id인 유저가 존재하지 않습니다"),
-    INCORRECT_PASSWORD("L002","비밀번호가 틀렸습니다");
+    INCORRECT_PASSWORD("L002","비밀번호가 틀렸습니다"),
 
+    ALREADY_HEART_ERROR("H001", "이미 누를 좋아요 입니다");
 
     private String errorCode;
     private String message;
