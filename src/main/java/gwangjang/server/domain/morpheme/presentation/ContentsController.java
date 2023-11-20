@@ -27,7 +27,7 @@ import java.util.List;
 import static gwangjang.server.domain.morpheme.presentation.constant.ContentsResponse.GET_MY_CONTENTS;
 
 @RestController
-@AllArgsConstructor(onConstructor_ = {@Autowired})
+@AllArgsConstructor
 //@RequiredArgsConstructor
 public class ContentsController {
 
