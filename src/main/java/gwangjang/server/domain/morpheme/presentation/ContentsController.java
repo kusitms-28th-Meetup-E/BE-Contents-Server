@@ -3,6 +3,7 @@ package gwangjang.server.domain.morpheme.presentation;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import gwangjang.server.domain.morpheme.application.dto.req.TotalReq;
 import gwangjang.server.domain.morpheme.application.dto.res.ContentsDataRes;
+import gwangjang.server.domain.morpheme.application.dto.res.ContentsRes;
 import gwangjang.server.domain.morpheme.application.service.ContentsSubscribeUseCase;
 
 import gwangjang.server.domain.morpheme.domain.entity.Contents;
