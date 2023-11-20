@@ -11,6 +11,9 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ContentLikeRes {
-    private Contents contents;
+    private String status;
+    private Integer contentsId;
     private String loginId;
+
+
 }
