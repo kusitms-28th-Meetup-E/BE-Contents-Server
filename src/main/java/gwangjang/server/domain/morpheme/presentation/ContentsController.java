@@ -3,6 +3,7 @@ package gwangjang.server.domain.morpheme.presentation;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import gwangjang.server.domain.morpheme.application.dto.req.TotalReq;
 import gwangjang.server.domain.morpheme.application.dto.res.ContentsDataRes;
+import gwangjang.server.domain.morpheme.application.dto.res.ContentsRes;
 import gwangjang.server.domain.morpheme.application.service.ContentsSubscribeUseCase;
 
 import gwangjang.server.domain.morpheme.domain.entity.Contents;
@@ -28,7 +29,6 @@ import static gwangjang.server.domain.morpheme.presentation.constant.ContentsRes
 
 @RestController
 @AllArgsConstructor
-//@RequiredArgsConstructor
 public class ContentsController {
 
     private final ContentsService contentsService;
@@ -44,16 +44,16 @@ public class ContentsController {
     }
 
     @GetMapping("/issueTitle/{issue}")
-    public ResponseEntity<SuccessResponse<List<ContentsRes>>> getContentsTitle(@PathVariable String issue) throws JsonProcessingException {
+    public ResponseEntity<SuccessResponse<List<ContentsRes>>> getContentsTitle(@PathVariable String issue) {
         return ResponseEntity.ok(SuccessResponse.create(ContentsResponseMessage.GET_CONTENTS_SUCCESS.getMessage(),this.contentsService.getContentsTitle(issue)));
     }
 
     @GetMapping("/keyword/{keyword}/{type}")
-    public ResponseEntity<SuccessResponse<List<ContentsRes>>> getContentsTitle(@PathVariable String keyword, @PathVariable ApiType type) throws JsonProcessingException {
+    public ResponseEntity<SuccessResponse<List<ContentsRes>>> getContentsTitle(@PathVariable String keyword, @PathVariable ApiType type) {
         return ResponseEntity.ok(SuccessResponse.create(ContentsResponseMessage.GET_CONTENTS_SUCCESS.getMessage(),this.contentsService.getKeywordAndType(keyword,type)));
     }
     @GetMapping("/{contentId}")
-    public ResponseEntity<SuccessResponse<ContentsRes>> getContentsTitle(@PathVariable Integer contentId) throws JsonProcessingException {
+    public ResponseEntity<SuccessResponse<ContentsRes>> getContentsTitle(@PathVariable Integer contentId) {
         return ResponseEntity.ok(SuccessResponse.create(ContentsResponseMessage.GET_CONTENTS_SUCCESS.getMessage(),this.contentsService.getContentsById(contentId)));
     }
 
