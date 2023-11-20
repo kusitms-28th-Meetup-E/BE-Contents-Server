@@ -61,6 +61,11 @@ public class ContentsController {
     public ResponseEntity<SuccessResponse<String>> getNaverContents() {
         return ResponseEntity.ok(SuccessResponse.create(ContentsResponseMessage.GET_CONTENTS_SUCCESS.getMessage(),this.newsAPIService.naverAPI("test")));
     }
+    @GetMapping("/contents/like")
+    public ResponseEntity<SuccessResponse<List<ContentsRes>>> getContentLikeCount() {
+        return ResponseEntity.ok(SuccessResponse.create(ContentsResponseMessage.GET_CONTENTS_SUCCESS.getMessage(),this.contentsService.getContentLikeCount()));
+    }
+
 
     //컨텐츠 가져오는 API
     //유튜브에서 제공해주는 할당량 다 사용해서 어떻게 할지 얘기할 것.

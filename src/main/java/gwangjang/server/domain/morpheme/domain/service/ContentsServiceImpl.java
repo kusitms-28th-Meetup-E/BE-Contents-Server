@@ -1,5 +1,8 @@
 package gwangjang.server.domain.morpheme.domain.service;
 
+import gwangjang.server.domain.like.domain.entity.ContentLike;
+import gwangjang.server.domain.like.domain.repository.LikeRepository;
+import gwangjang.server.domain.morpheme.application.dto.res.ContentLikeCountRes;
 import gwangjang.server.domain.morpheme.application.dto.res.ContentsRes;
 import gwangjang.server.domain.morpheme.application.mapper.ContentsMapper;
 import gwangjang.server.domain.morpheme.domain.entity.Contents;
@@ -29,14 +32,16 @@ public class ContentsServiceImpl implements ContentsService{
     private final ContentsRepository contentsRepository;
     private final WebClient webClient;
     private final ContentsMapper contentsMapper;
+    private final LikeRepository contentsLikeRepository;
 
     @Value("${youtube.api.key}")
     private String youtubeApiKey;
 
     @Autowired
-    public ContentsServiceImpl(ContentsRepository contentsRepository, ContentsMapper contentsMapper) {
+    public ContentsServiceImpl(ContentsRepository contentsRepository, ContentsMapper contentsMapper,LikeRepository likeRepository) {
         this.contentsRepository = contentsRepository;
         this.contentsMapper = contentsMapper;
+        this.contentsLikeRepository=likeRepository;
         this.webClient = WebClient.builder()
                 .baseUrl("https://www.googleapis.com/youtube/v3")
                 .build();
@@ -163,4 +168,13 @@ public class ContentsServiceImpl implements ContentsService{
                 .orElseThrow(() -> new IllegalArgumentException("해당 콘텐츠가 존재하지 않습니다. id=" + contentsId));
         return contentsMapper.toDto(contents);
     }
+
+    public List<ContentsRes> getContentLikeCount(){
+        List<Contents> contents = contentsRepository.findAllOrderByLikeCountDesc();
+
+        return contents.stream()
+                .map(contentsMapper::toDto)
+                .collect(Collectors.toList());
+    }
+
 }
