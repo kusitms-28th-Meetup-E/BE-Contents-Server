@@ -18,6 +18,6 @@ public interface ContentsMapper {
     @Mapping(target = "contents_id", ignore = true)
     Contents toEntity(ContentsRes contentsRes);
 
-    @Mapping(target = "contents_id", ignore = true)
+    @Mapping(target = "contents_id", ignore = false)
     ContentsRes toDto(Contents contents);
 }
