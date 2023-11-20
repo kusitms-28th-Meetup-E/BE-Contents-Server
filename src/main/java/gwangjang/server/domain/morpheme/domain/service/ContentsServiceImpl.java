@@ -176,5 +176,12 @@ public class ContentsServiceImpl implements ContentsService{
                 .map(contentsMapper::toDto)
                 .collect(Collectors.toList());
     }
+    public List<ContentsRes> findContentsByLoginId(String loginId){
+        List<Contents> contents = contentsRepository.findContentsByLoginId(loginId);
+        return contents.stream()
+                .map(contentsMapper::toDto)
+                .collect(Collectors.toList());
+    }
+
 
 }

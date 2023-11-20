@@ -65,6 +65,10 @@ public class ContentsController {
     public ResponseEntity<SuccessResponse<List<ContentsRes>>> getContentLikeCount() {
         return ResponseEntity.ok(SuccessResponse.create(ContentsResponseMessage.GET_CONTENTS_SUCCESS.getMessage(),this.contentsService.getContentLikeCount()));
     }
+    @GetMapping("/my-page/like")
+    public ResponseEntity<SuccessResponse<List<ContentsRes>>> getContentsByLoginId(@RequestHeader(value = "user-id") String socialId) {
+        return ResponseEntity.ok(SuccessResponse.create(ContentsResponseMessage.GET_CONTENTS_SUCCESS.getMessage(),this.contentsService.findContentsByLoginId(socialId)));
+    }
 
 
     //컨텐츠 가져오는 API

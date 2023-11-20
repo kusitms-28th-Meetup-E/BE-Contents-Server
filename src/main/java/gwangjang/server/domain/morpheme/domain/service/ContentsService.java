@@ -18,6 +18,7 @@ public interface ContentsService {
     List<ContentsRes> getKeywordAndType(String Keyword, ApiType apiType);
     ContentsRes getContentsById(Integer contentsId);
     List<ContentsRes> getContentLikeCount();
+    List<ContentsRes> findContentsByLoginId(String loginId);
 
 }
 
