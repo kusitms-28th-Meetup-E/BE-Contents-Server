@@ -2,6 +2,7 @@ package gwangjang.server.domain.morpheme.presentation;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import gwangjang.server.domain.morpheme.application.dto.req.TotalReq;
+import gwangjang.server.domain.morpheme.application.dto.res.ContentsRes;
 import gwangjang.server.domain.morpheme.domain.entity.Contents;
 import gwangjang.server.domain.morpheme.domain.entity.constant.ApiType;
 import gwangjang.server.domain.morpheme.domain.service.ContentsService;
@@ -29,21 +30,21 @@ public class ContentsController {
     private final NewsAPIService newsAPIService;
 
     @GetMapping("/contents/{type}")
-    public  ResponseEntity<SuccessResponse<List<Contents>>> getYoutubeContents(@PathVariable ApiType type){
+    public  ResponseEntity<SuccessResponse<List<ContentsRes>>> getYoutubeContents(@PathVariable ApiType type){
         return ResponseEntity.ok(SuccessResponse.create(ContentsResponseMessage.GET_CONTENTS_SUCCESS.getMessage(),this.contentsService.getContents(type)));
     }
 
     @GetMapping("/issueTitle/{issue}")
-    public ResponseEntity<SuccessResponse<List<Contents>>> getContentsTitle(@PathVariable String issue) throws JsonProcessingException {
+    public ResponseEntity<SuccessResponse<List<ContentsRes>>> getContentsTitle(@PathVariable String issue) throws JsonProcessingException {
         return ResponseEntity.ok(SuccessResponse.create(ContentsResponseMessage.GET_CONTENTS_SUCCESS.getMessage(),this.contentsService.getContentsTitle(issue)));
     }
 
     @GetMapping("/keyword/{keyword}/{type}")
-    public ResponseEntity<SuccessResponse<List<Contents>>> getContentsTitle(@PathVariable String keyword, @PathVariable ApiType type) throws JsonProcessingException {
+    public ResponseEntity<SuccessResponse<List<ContentsRes>>> getContentsTitle(@PathVariable String keyword, @PathVariable ApiType type) throws JsonProcessingException {
         return ResponseEntity.ok(SuccessResponse.create(ContentsResponseMessage.GET_CONTENTS_SUCCESS.getMessage(),this.contentsService.getKeywordAndType(keyword,type)));
     }
     @GetMapping("/{contentId}")
-    public ResponseEntity<SuccessResponse<Contents>> getContentsTitle(@PathVariable Integer contentId) throws JsonProcessingException {
+    public ResponseEntity<SuccessResponse<ContentsRes>> getContentsTitle(@PathVariable Integer contentId) throws JsonProcessingException {
         return ResponseEntity.ok(SuccessResponse.create(ContentsResponseMessage.GET_CONTENTS_SUCCESS.getMessage(),this.contentsService.getContentsById(contentId)));
     }
 
