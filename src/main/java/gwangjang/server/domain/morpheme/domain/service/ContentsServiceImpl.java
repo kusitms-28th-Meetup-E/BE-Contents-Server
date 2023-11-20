@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
@@ -25,6 +26,9 @@ public class ContentsServiceImpl implements ContentsService {
 
     private final ContentsRepository contentsRepository;
     private final WebClient webClient;
+
+    @Value("${youtube.api.key}")
+    private String youtubeApiKey;
 
     @Autowired
     public ContentsServiceImpl(ContentsRepository contentsRepository) {
@@ -49,7 +53,7 @@ public class ContentsServiceImpl implements ContentsService {
     private Mono<Void> searchYoutube(String singleSearch) {
         Mono<String> searchResultMono = webClient.get()
                 .uri(uriBuilder -> uriBuilder.path("/search")
-                        .queryParam("key", "AIzaSyAJ7vbt7Mu4MY5Ng_gtP-K8nDcsEuS2684")
+                        .queryParam("key", youtubeApiKey)
                         .queryParam("part", "snippet")
                         .queryParam("type", "video")
                         .queryParam("maxResults", 20)
