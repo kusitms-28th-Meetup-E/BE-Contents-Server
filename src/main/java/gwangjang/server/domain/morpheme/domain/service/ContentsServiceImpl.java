@@ -1,5 +1,6 @@
 package gwangjang.server.domain.morpheme.domain.service;
 
+import gwangjang.server.domain.morpheme.application.dto.res.ContentsRes;
 import gwangjang.server.domain.morpheme.domain.entity.Contents;
 import gwangjang.server.domain.morpheme.domain.entity.constant.ApiType;
 import gwangjang.server.domain.morpheme.domain.repository.ContentsRepository;
@@ -80,6 +81,7 @@ public class ContentsServiceImpl implements ContentsService {
     }
 
     private Contents createYoutubeContent(JSONObject item, String singleSearch) {
+        
         JSONObject id = item.optJSONObject("id");
         if (id == null) {
             System.err.println("No 'id' found in the item: " + item);
@@ -102,7 +104,7 @@ public class ContentsServiceImpl implements ContentsService {
         String description = snippet.optString("description");
         String pubDate = snippet.optString("publishedAt");
 
-        Contents youtubeContent = new Contents();
+        ContentsRes youtubeContent = new ContentsRes();
         youtubeContent.setType(ApiType.YOUTUBE);
         youtubeContent.setUrl(videoId);
         youtubeContent.setTitle(title);
@@ -110,7 +112,7 @@ public class ContentsServiceImpl implements ContentsService {
         youtubeContent.setPubDate(pubDate);
         youtubeContent.setIssueTitle(singleSearch);
 
-        return youtubeContent;
+        return youtubeContent.toEntity(youtubeContent);
     }
 
     @Transactional
