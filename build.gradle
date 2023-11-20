@@ -87,6 +87,13 @@ dependencies {
 	implementation 'com.google.oauth-client:google-oauth-client-jetty:1.23.0'
 	implementation 'com.google.apis:google-api-services-youtube:v3-rev222-1.25.0'
 
+	//mapper
+	implementation 'org.mapstruct:mapstruct:1.4.2.Final'
+	annotationProcessor "org.mapstruct:mapstruct-processor:1.4.2.Final"
+	annotationProcessor 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
+	compileOnly 'org.projectlombok:lombok:1.18.22'
+	annotationProcessor 'org.projectlombok:lombok:1.18.22'
+
 }
 
 dependencyManagement {

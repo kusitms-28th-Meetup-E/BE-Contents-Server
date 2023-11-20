@@ -3,12 +3,13 @@ package gwangjang.server.domain.morpheme.presentation;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import gwangjang.server.domain.morpheme.application.dto.req.TotalReq;
 import gwangjang.server.domain.morpheme.application.dto.res.ContentsDataRes;
-import gwangjang.server.domain.morpheme.application.dto.res.ContentsRes;
 import gwangjang.server.domain.morpheme.application.service.ContentsSubscribeUseCase;
+
 import gwangjang.server.domain.morpheme.domain.entity.Contents;
 import gwangjang.server.domain.morpheme.domain.entity.constant.ApiType;
 import gwangjang.server.domain.morpheme.domain.service.ContentsService;
 import gwangjang.server.domain.morpheme.domain.service.NewsAPIService;
+import gwangjang.server.domain.morpheme.presentation.constant.ContentsResponseMessage;
 import gwangjang.server.global.feign.client.FindKeywordFeignClient;
 import gwangjang.server.global.response.SuccessResponse;
 import lombok.AllArgsConstructor;
@@ -37,101 +38,72 @@ public class ContentsController {
 
     private final NewsAPIService newsAPIService;
 
-    @GetMapping("/keyword/test")
-    //@Scheduled(cron = "0 0 0 * * *")
-    public String getKeyword () throws JsonProcessingException {
-        Mono<Void> a = null;
-        String b = null;
-        // 이 부분에서 findKeywordFeignClient.getAll() 호출하고 결과를 받아온다고 가정합니다.
-        List<TotalReq> keywordList = findKeywordFeignClient.getAll().getBody().getData();
-        StringBuilder resultStringBuilder = new StringBuilder();
+    @GetMapping("/contents/{type}")
+    public  ResponseEntity<SuccessResponse<List<ContentsRes>>> getYoutubeContents(@PathVariable ApiType type){
+        return ResponseEntity.ok(SuccessResponse.create(ContentsResponseMessage.GET_CONTENTS_SUCCESS.getMessage(),this.contentsService.getContents(type)));
+    }
 
-        for (TotalReq issueData : keywordList) {
-            String combinedString = issueData.getIssueTitle() + " " + issueData.getKeyword();
-            resultStringBuilder.append(combinedString).append("\n");
-        }
-        // 결과 문자열 출력
-        String resultString = resultStringBuilder.toString().trim();
+    @GetMapping("/issueTitle/{issue}")
+    public ResponseEntity<SuccessResponse<List<ContentsRes>>> getContentsTitle(@PathVariable String issue) throws JsonProcessingException {
+        return ResponseEntity.ok(SuccessResponse.create(ContentsResponseMessage.GET_CONTENTS_SUCCESS.getMessage(),this.contentsService.getContentsTitle(issue)));
+    }
 
+    @GetMapping("/keyword/{keyword}/{type}")
+    public ResponseEntity<SuccessResponse<List<ContentsRes>>> getContentsTitle(@PathVariable String keyword, @PathVariable ApiType type) throws JsonProcessingException {
+        return ResponseEntity.ok(SuccessResponse.create(ContentsResponseMessage.GET_CONTENTS_SUCCESS.getMessage(),this.contentsService.getKeywordAndType(keyword,type)));
+    }
+    @GetMapping("/{contentId}")
+    public ResponseEntity<SuccessResponse<ContentsRes>> getContentsTitle(@PathVariable Integer contentId) throws JsonProcessingException {
+        return ResponseEntity.ok(SuccessResponse.create(ContentsResponseMessage.GET_CONTENTS_SUCCESS.getMessage(),this.contentsService.getContentsById(contentId)));
+    }
+
+    @GetMapping("/naver/contents")
+    public ResponseEntity<SuccessResponse<String>> getNaverContents() {
+        return ResponseEntity.ok(SuccessResponse.create(ContentsResponseMessage.GET_CONTENTS_SUCCESS.getMessage(),this.newsAPIService.naverAPI("test")));
+    }
+
+    //컨텐츠 가져오는 API
+    //유튜브에서 제공해주는 할당량 다 사용해서 어떻게 할지 얘기할 것.
+    // 진짜 조금 지원해줌 ㅜ
+
+//    @GetMapping("/keyword/test")
+//    //@Scheduled(cron = "0 0 0 * * *")
+//    public ResponseEntity<SuccessResponse<String>> getKeyword () throws JsonProcessingException {
+//        Mono<Void> a = null;
+//        String b = null;
+//        // 이 부분에서 findKeywordFeignClient.getAll() 호출하고 결과를 받아온다고 가정합니다.
+//        List<TotalReq> keywordList = findKeywordFeignClient.getAll().getBody().getData();
+//        StringBuilder resultStringBuilder = new StringBuilder();
+//
+//        for (TotalReq issueData : keywordList) {
+//            String combinedString = issueData.getIssueTitle() + " " + issueData.getKeyword();
+//            resultStringBuilder.append(combinedString).append("\n");
+//        }
+//        // 결과 문자열 출력
+//        String resultString = resultStringBuilder.toString().trim();
 //        // issueId가 같은 경우에 issueTitle과 keyword를 조합하여 msg를 만듭니다.
 //        StringBuilder msgBuilder = new StringBuilder();
-//        Long currentIssueId = -1L;  // 초기값으로 사용되지 않을 값으로 설정
-//        String currentIssueTitle = null;
-//        StringBuilder currentKeywords = new StringBuilder();
-//
-//        for (TotalReq keyword : keywordList) {
-//            if (keyword.getIssueId() != currentIssueId) {
-//                // 새로운 issueId에 대한 처리
-//                if (currentIssueId != -1) {
-//                    // 처음이 아니면 이전 데이터를 msg에 추가
-//                    msgBuilder.append(currentIssueTitle).append(" ").append(currentKeywords).append("\n");
-//                }
-//
-//                // 새로운 issueId 설정
-//                currentIssueId = keyword.getIssueId();
-//                currentIssueTitle = keyword.getIssueTitle();
-//                currentKeywords = new StringBuilder();
-//            }
-//
-//            // keyword 추가
-//            currentKeywords.append(keyword.getKeyword()).append(" ");
-//        }
-//
-//        // 마지막 데이터 처리
-//        if (currentIssueId != -1) {
-//            msgBuilder.append(currentIssueTitle).append(" ").append(currentKeywords).append("\n");
-//        }
-//
-//        // 최종 결과인 msg를 얻습니다.
+
+//        // 최종 결과
 //        String msg = msgBuilder.toString();
-//        System.out.println(msg);
-//        // 이후에 msg를 사용하면 됩니다.
+
 //        String[] sentences = msg.split("\n");
 //        for (String sentence : sentences) {
 //            System.out.println(sentence);
 //
 //        }
+//
+//        String[] sentences = resultString.split("\n");
+//       // a = analysis(sentences);
+//        for(String sentence : sentences) {
+//           b += newsAPIService.naverAPI(sentence);
+//        }
+//        //System.out.println(resultString);
+//        //contentsService.saveYoutubeContent(sentences);
+//
+//        return b;
+//    }
 
-        String[] sentences = resultString.split("\n");
-       // a = analysis(sentences);
-        for(String sentence : sentences) {
-           b += newsAPIService.naverAPI(sentence);
-        }
-        //System.out.println(resultString);
-        //contentsService.saveYoutubeContent(sentences);
-
-        return b;
-    }
-
-//    @GetMapping("/test")
-    public Mono<Void> analysis(String[] issue) {
-        return contentsService.saveYoutubeContent(issue);
-    }
-
-    @GetMapping("/contents/{type}")
-    public  List<Contents> getYoutubeContents(@PathVariable ApiType type){
-        return contentsService.getContents(type);
-    }
-
-
-    @GetMapping("/naver/contents")
-    public String getNaverContents() throws JsonProcessingException {
-        return newsAPIService.naverAPI("test");
-    }
-
-    @GetMapping("/issueTitle/{issue}")
-    public List<Contents> getContentsTitle(@PathVariable String issue) throws JsonProcessingException {
-        return contentsService.getContentsTitle(issue);
-    }
-
-    @GetMapping("/keyword/{keyword}/{type}")
-    public List<Contents> getContentsTitle(@PathVariable String keyword, @PathVariable ApiType type) throws JsonProcessingException {
-        return contentsService.getKeywordAndType(keyword,type);
-    }
-    @GetMapping("/{contentId}")
-    public Contents getContentsTitle(@PathVariable Integer contentId) throws JsonProcessingException {
-        return contentsService.getContentsById(contentId);
-    }
 
     @GetMapping("/subscribe/{issue}")
     public ResponseEntity<SuccessResponse<List<ContentsDataRes>>> getMySubscribe(@RequestHeader(value = "user-id") String socialId,@PathVariable("issue")String issue) {

@@ -1,6 +1,7 @@
 package gwangjang.server.domain.morpheme.domain.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import gwangjang.server.domain.morpheme.application.dto.res.ContentsRes;
 import gwangjang.server.domain.morpheme.domain.entity.Contents;
 import gwangjang.server.domain.morpheme.domain.entity.constant.ApiType;
 import gwangjang.server.domain.morpheme.domain.repository.ContentsRepository;
@@ -37,31 +38,31 @@ public class NewsAPIService {
         this.contentsRepository = contentsRepository;
     }
 
-    public String naverAPI(String name) throws JsonProcessingException {
+    public String naverAPI(String name) {
         StringBuilder result = new StringBuilder();
 
-        URI uri = UriComponentsBuilder
-                .fromUriString("https://openapi.naver.com/")
-                .path("/v1/search/news.json")
-                .queryParam("query", name)
-                .queryParam("display", 20)
-                .queryParam("start", 1)
-                .queryParam("sort", "sim")
-                .encode(StandardCharsets.UTF_8)
-                .build()
-                .toUri();
-
-        RequestEntity<Void> request = RequestEntity
-                .get(uri)
-                .header("X-Naver-Client-Id", NAVER_API_ID)
-                .header("X-Naver-Client-Secret", NAVER_API_SECRET)
-                .build();
-
-        ResponseEntity<String> responseEntity = restTemplate.exchange(request, String.class);
-        String json = responseEntity.getBody();
-        System.out.println(json);
-
         try {
+            URI uri = UriComponentsBuilder
+                    .fromUriString("https://openapi.naver.com/")
+                    .path("/v1/search/news.json")
+                    .queryParam("query", name)
+                    .queryParam("display", 20)
+                    .queryParam("start", 1)
+                    .queryParam("sort", "sim")
+                    .encode(StandardCharsets.UTF_8)
+                    .build()
+                    .toUri();
+
+            RequestEntity<Void> request = RequestEntity
+                    .get(uri)
+                    .header("X-Naver-Client-Id", NAVER_API_ID)
+                    .header("X-Naver-Client-Secret", NAVER_API_SECRET)
+                    .build();
+
+            ResponseEntity<String> responseEntity = restTemplate.exchange(request, String.class);
+            String json = responseEntity.getBody();
+            System.out.println(json);
+
             JSONParser parser = new JSONParser();
             JSONObject jsonData = (JSONObject) parser.parse(json);
             JSONArray items = (JSONArray) jsonData.get("items");
@@ -73,17 +74,22 @@ public class NewsAPIService {
                 String description = (String) item.get("description");
                 String url = (String) item.get("originallink");
                 String pubDate = (String) item.get("pubDate");
-                Contents contents = new Contents();
-                contents.setTitle(title);
-                contents.setDescription(description);
-                contents.setUrl(url);
-                contents.setPubDate(pubDate);
-                contents.setType(ApiType.NAVER);
-                contents.setIssueTitle(name);
-                contentsRepository.save(contents);
+                ContentsRes contentsRes = new ContentsRes();
+                contentsRes.setTitle(title);
+                contentsRes.setDescription(description);
+                contentsRes.setUrl(url);
+                contentsRes.setPubDate(pubDate);
+                contentsRes.setType(ApiType.NAVER);
+                contentsRes.setIssueTitle(name);
+                contentsRepository.save(Contents.toEntity(contentsRes));
             }
-
+        } catch (org.json.simple.parser.ParseException e) {
+            // Handle the ParseException locally
+            e.printStackTrace(); // Add your handling logic here
+            // You might want to log the error or return an error message
+            result.append("Error parsing JSON response");
         } catch (Exception e) {
+            // Handle other exceptions if needed
             e.printStackTrace();
         }
 
