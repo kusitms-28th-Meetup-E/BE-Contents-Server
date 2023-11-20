@@ -116,4 +116,8 @@ public class ContentsController {
     public List<Contents> getContentsTitle(@PathVariable String keyword, @PathVariable ApiType type) throws JsonProcessingException {
         return contentsService.getKeywordAndType(keyword,type);
     }
+    @GetMapping("/{contentId}")
+    public Contents getContentsTitle(@PathVariable Integer contentId) throws JsonProcessingException {
+        return contentsService.getContentsById(contentId);
+    }
 }
