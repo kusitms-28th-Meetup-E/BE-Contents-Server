@@ -15,5 +15,7 @@ public interface ContentsService {
     public List<Contents> getContents(ApiType type);
     List<Contents> getContentsTitle(String issue);
     List<Contents> getKeywordAndType(String Keyword, ApiType apiType);
+    Contents getContentsById(Integer contentsId);
+
 }
 

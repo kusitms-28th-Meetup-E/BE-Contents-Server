@@ -1,11 +1,15 @@
 package gwangjang.server.domain.morpheme.domain.entity;
 
+import gwangjang.server.domain.like.domain.entity.ContentLike;
 import gwangjang.server.domain.morpheme.domain.entity.constant.ApiType;
 import gwangjang.server.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @NoArgsConstructor
 @Getter
@@ -23,7 +27,11 @@ public class Contents extends BaseEntity {
     ApiType type;
 
     private String issueTitle;
+    private String keyword;
     private String pubDate;
+
+    @OneToMany(fetch = FetchType.LAZY)
+    List<ContentLike> like = new ArrayList<>();
     public Contents(String url, String title, String description) {
         this.url = url;
         this.title = title;

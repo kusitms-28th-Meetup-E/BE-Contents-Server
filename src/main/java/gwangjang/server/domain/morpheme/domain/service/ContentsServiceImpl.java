@@ -138,5 +138,7 @@ public class ContentsServiceImpl implements ContentsService {
         return contentsRepository.findByIssueTitleLikeAndTypeOrderByPubDateDesc("%" + Keyword + "%", apiType);
     }
 
-
+    public Contents getContentsById(Integer contentsId) {
+        return contentsRepository.findById(contentsId).orElseThrow(() -> new IllegalArgumentException("해당 콘텐츠가 존재하지 않습니다. id=" + contentsId));
+    }
 }
