@@ -8,5 +8,6 @@ import java.util.List;
 public interface ContentsCustomRepository {
     List<ContentsDataRes> getContentsByIssueId(String issue);
     List<Contents> findAllOrderByLikeCountDesc();
+    List<Contents> findContentsByLoginId(String loginId);
 
 }

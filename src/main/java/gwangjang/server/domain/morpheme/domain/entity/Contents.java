@@ -1,5 +1,6 @@
 package gwangjang.server.domain.morpheme.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import gwangjang.server.domain.like.domain.entity.ContentLike;
 import gwangjang.server.domain.morpheme.application.dto.res.ContentsRes;
 import gwangjang.server.domain.morpheme.domain.entity.constant.ApiType;
@@ -35,6 +36,7 @@ public class Contents extends BaseEntity {
     private String topic;
 
     @OneToMany(fetch = FetchType.LAZY)
+    @JsonIgnore
     List<ContentLike> like = new ArrayList<>();
     public Contents(String url, String title, String description) {
         this.url = url;

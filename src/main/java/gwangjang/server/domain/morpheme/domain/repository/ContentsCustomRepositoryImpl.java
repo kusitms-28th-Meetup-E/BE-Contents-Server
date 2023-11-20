@@ -11,6 +11,7 @@ import gwangjang.server.domain.morpheme.domain.entity.Contents;
 import gwangjang.server.domain.morpheme.domain.entity.QContents;
 import jakarta.persistence.EntityManager;
 
+import java.util.Collections;
 import java.util.List;
 
 import static gwangjang.server.domain.morpheme.domain.entity.QContents.contents;
@@ -51,6 +52,29 @@ public class ContentsCustomRepositoryImpl implements ContentsCustomRepository {
                 .groupBy(contents.contents_id)
                 .orderBy(contentLike.likeId.count().desc())
                 .fetch();
+        return result;
+    }
+    public List<Contents> findContentsByLoginId(String loginId) {
+        QContents contents = QContents.contents;
+        QContentLike contentLike = QContentLike.contentLike;
+
+
+        List<Integer> likedContentIds = queryFactory
+                .select(contentLike.contents.contents_id)
+                .from(contentLike)
+                .where(contentLike.loginId.eq(loginId))
+                .fetch();
+
+        if (likedContentIds.isEmpty()) {
+            return Collections.emptyList(); // 만약 좋아요한 컨텐츠가 없다면 빈 리스트 반환
+        }
+
+        List<Contents> result = queryFactory
+                .select(contents)
+                .from(contents)
+                .where(contents.contents_id.in(likedContentIds))
+                .fetch();
+
         return result;
     }
 
