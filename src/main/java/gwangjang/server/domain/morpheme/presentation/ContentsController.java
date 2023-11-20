@@ -17,10 +17,7 @@ import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
@@ -65,7 +62,7 @@ public class ContentsController {
     public ResponseEntity<SuccessResponse<List<ContentsRes>>> getContentLikeCount() {
         return ResponseEntity.ok(SuccessResponse.create(ContentsResponseMessage.GET_CONTENTS_SUCCESS.getMessage(),this.contentsService.getContentLikeCount()));
     }
-    @GetMapping("/my-page/like")
+    @PostMapping("/my-page/like")
     public ResponseEntity<SuccessResponse<List<ContentsRes>>> getContentsByLoginId(@RequestHeader(value = "user-id") String socialId) {
         return ResponseEntity.ok(SuccessResponse.create(ContentsResponseMessage.GET_CONTENTS_SUCCESS.getMessage(),this.contentsService.findContentsByLoginId(socialId)));
     }
