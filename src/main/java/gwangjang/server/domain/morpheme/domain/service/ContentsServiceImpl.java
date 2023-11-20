@@ -1,5 +1,7 @@
 package gwangjang.server.domain.morpheme.domain.service;
 
+import gwangjang.server.domain.morpheme.application.dto.res.ContentsRes;
+import gwangjang.server.domain.morpheme.application.mapper.ContentsMapper;
 import gwangjang.server.domain.morpheme.domain.entity.Contents;
 import gwangjang.server.domain.morpheme.domain.entity.constant.ApiType;
 import gwangjang.server.domain.morpheme.domain.repository.ContentsRepository;
@@ -9,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
@@ -16,21 +19,28 @@ import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class ContentsServiceImpl implements ContentsService {
+public class ContentsServiceImpl implements ContentsService{
 
     private final ContentsRepository contentsRepository;
     private final WebClient webClient;
+    private final ContentsMapper contentsMapper;
+
+    @Value("${youtube.api.key}")
+    private String youtubeApiKey;
 
     @Autowired
-    public ContentsServiceImpl(ContentsRepository contentsRepository) {
+    public ContentsServiceImpl(ContentsRepository contentsRepository, ContentsMapper contentsMapper) {
         this.contentsRepository = contentsRepository;
+        this.contentsMapper = contentsMapper;
         this.webClient = WebClient.builder()
                 .baseUrl("https://www.googleapis.com/youtube/v3")
                 .build();
+
     }
 
     @Override
@@ -48,7 +58,7 @@ public class ContentsServiceImpl implements ContentsService {
     private Mono<Void> searchYoutube(String singleSearch) {
         Mono<String> searchResultMono = webClient.get()
                 .uri(uriBuilder -> uriBuilder.path("/search")
-                        .queryParam("key", "AIzaSyAJ7vbt7Mu4MY5Ng_gtP-K8nDcsEuS2684")
+                        .queryParam("key", youtubeApiKey)
                         .queryParam("part", "snippet")
                         .queryParam("type", "video")
                         .queryParam("maxResults", 20)
@@ -80,6 +90,7 @@ public class ContentsServiceImpl implements ContentsService {
     }
 
     private Contents createYoutubeContent(JSONObject item, String singleSearch) {
+        
         JSONObject id = item.optJSONObject("id");
         if (id == null) {
             System.err.println("No 'id' found in the item: " + item);
@@ -102,7 +113,7 @@ public class ContentsServiceImpl implements ContentsService {
         String description = snippet.optString("description");
         String pubDate = snippet.optString("publishedAt");
 
-        Contents youtubeContent = new Contents();
+        ContentsRes youtubeContent = new ContentsRes();
         youtubeContent.setType(ApiType.YOUTUBE);
         youtubeContent.setUrl(videoId);
         youtubeContent.setTitle(title);
@@ -110,7 +121,7 @@ public class ContentsServiceImpl implements ContentsService {
         youtubeContent.setPubDate(pubDate);
         youtubeContent.setIssueTitle(singleSearch);
 
-        return youtubeContent;
+        return contentsMapper.toEntity(youtubeContent);
     }
 
     @Transactional
@@ -126,19 +137,30 @@ public class ContentsServiceImpl implements ContentsService {
         }
     }
 
-    public List<Contents> getContents(ApiType type) {
-        return contentsRepository.findByType(type);
+    public List<ContentsRes> getContents(ApiType type) {
+        List<Contents> contents = contentsRepository.findByType(type);
+        return contents.stream()
+                .map(contentsMapper::toDto)
+                .collect(Collectors.toList());
     }
 
-    public List<Contents> getContentsTitle(String issue) {
-        return contentsRepository.findByIssueTitleLike("%" + issue + "%");
+    public List<ContentsRes> getContentsTitle(String issue) {
+        List<Contents> contents = contentsRepository.findByIssueTitleLike("%" + issue + "%");
+        return contents.stream()
+                .map(contentsMapper::toDto)
+                .collect(Collectors.toList());
     }
 
-    public List<Contents> getKeywordAndType(String Keyword, ApiType apiType) {
-        return contentsRepository.findByKeywordLikeAndTypeOrderByPubDateDesc("%" + Keyword + "%", apiType);
+    public List<ContentsRes> getKeywordAndType(String keyword, ApiType apiType) {
+        List<Contents> contents = contentsRepository.findByKeywordLikeAndTypeOrderByPubDateDesc("%" + keyword + "%", apiType);
+        return contents.stream()
+                .map(contentsMapper::toDto)
+                .collect(Collectors.toList());
     }
 
-    public Contents getContentsById(Integer contentsId) {
-        return contentsRepository.findById(contentsId).orElseThrow(() -> new IllegalArgumentException("해당 콘텐츠가 존재하지 않습니다. id=" + contentsId));
+    public ContentsRes getContentsById(Integer contentsId) {
+        Contents contents = contentsRepository.findById(contentsId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 콘텐츠가 존재하지 않습니다. id=" + contentsId));
+        return contentsMapper.toDto(contents);
     }
 }

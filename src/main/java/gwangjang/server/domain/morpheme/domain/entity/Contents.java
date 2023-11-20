@@ -1,9 +1,11 @@
 package gwangjang.server.domain.morpheme.domain.entity;
 
 import gwangjang.server.domain.like.domain.entity.ContentLike;
+import gwangjang.server.domain.morpheme.application.dto.res.ContentsRes;
 import gwangjang.server.domain.morpheme.domain.entity.constant.ApiType;
 import gwangjang.server.global.entity.BaseEntity;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,8 +15,8 @@ import java.util.List;
 
 @NoArgsConstructor
 @Getter
-@Data
 @Entity
+@AllArgsConstructor
 public class Contents extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,5 +49,27 @@ public class Contents extends BaseEntity {
         this.description = description;
         this.pubDate = pubDate;
         this.issueTitle = issueTitle;
+    }
+
+    public Contents(String url, String title, String description, ApiType type, String issueTitle, String keyword, String pubDate) {
+        this.url = url;
+        this.title = title;
+        this.description = description;
+        this.type = type;
+        this.issueTitle = issueTitle;
+        this.keyword = keyword;
+        this.pubDate = pubDate;
+    }
+
+    public static Contents toEntity(ContentsRes contentsRes) {
+        return new Contents(
+                contentsRes.getUrl(),
+                contentsRes.getTitle(),
+                contentsRes.getDescription(),
+                contentsRes.getType(),
+                contentsRes.getIssueTitle(),
+                contentsRes.getKeyword(),
+                contentsRes.getPubDate()
+        );
     }
 }
