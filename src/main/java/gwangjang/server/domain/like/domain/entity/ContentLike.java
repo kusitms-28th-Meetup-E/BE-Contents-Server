@@ -31,4 +31,8 @@ public class ContentLike {
     @UpdateTimestamp // UPDATE 시 자동으로 값을 채워줌
     private LocalDateTime updatedAt = LocalDateTime.now();
 
+    public ContentLike(Contents contents, String loginId) {
+        this.contents = contents;
+        this.loginId = loginId;
+    }
 }
