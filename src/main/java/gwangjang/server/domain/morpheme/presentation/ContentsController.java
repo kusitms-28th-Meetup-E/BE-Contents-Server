@@ -26,7 +26,7 @@ import java.util.List;
 import static gwangjang.server.domain.morpheme.presentation.constant.ContentsResponse.GET_MY_CONTENTS;
 
 @RestController
-@AllArgsConstructor(onConstructor_ = {@Autowired})
+@AllArgsConstructor
 //@RequiredArgsConstructor
 public class ContentsController {
 
@@ -137,4 +137,5 @@ public class ContentsController {
     public ResponseEntity<SuccessResponse<List<ContentsDataRes>>> getMySubscribe(@RequestHeader(value = "user-id") String socialId,@PathVariable("issue")String issue) {
         return ResponseEntity.ok(SuccessResponse.create(GET_MY_CONTENTS.getMessage(), this.contentsSubscribeUseCase.getContentsByIssue(issue)));
     }
+
 }
