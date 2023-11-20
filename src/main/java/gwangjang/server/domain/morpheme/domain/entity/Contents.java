@@ -30,6 +30,8 @@ public class Contents extends BaseEntity {
     private String keyword;
     private String pubDate;
 
+    private String topic;
+
     @OneToMany(fetch = FetchType.LAZY)
     List<ContentLike> like = new ArrayList<>();
     public Contents(String url, String title, String description) {
