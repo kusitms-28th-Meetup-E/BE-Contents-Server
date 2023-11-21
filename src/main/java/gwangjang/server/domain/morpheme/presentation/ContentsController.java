@@ -50,8 +50,8 @@ public class ContentsController {
 
     @GetMapping("/contents/{type}")
     public  ResponseEntity<SuccessResponse<List<ContentsRes>>> getYoutubeContents(@PathVariable ApiType type) throws NoSuchAlgorithmException, KeyManagementException {
-//        List<ContentsRes> contents = this.contentsService.getContents(type);
-//        imageUrlUpdateService.updateImageUrl(contents);
+        List<ContentsRes> contents = this.contentsService.getContents(type);
+        imageUrlUpdateService.updateImageUrl(contents);
         return ResponseEntity.ok(SuccessResponse.create(ContentsResponseMessage.GET_CONTENTS_SUCCESS.getMessage(),this.contentsService.getContents(type)));
     }
 
