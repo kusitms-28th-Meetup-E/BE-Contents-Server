@@ -90,15 +90,15 @@ public class ImageUrlUpdateService {
                         String twitterImageContent = twitterMatcher.group(1);
                         System.out.println(twitterImageContent);
                         contentsRes.setImgUrl(twitterImageContent);
-                        contentsRepository.save(contentsMapper.toEntity(contentsRes));
-                        updatedContentsResList.add(contentsRes);
+                        Contents updatedContentsEntity = contentsRepository.save(contentsMapper.toEntity(contentsRes));
+                        updatedContentsResList.add(contentsMapper.toDto(updatedContentsEntity));
                         break; // 이미지 URL을 찾았으면 더 이상 검색하지 않도록 종료
                     } else if (ogMatcher.find()) {
                         String ogImageContent = ogMatcher.group(1);
                         System.out.println(ogImageContent);
                         contentsRes.setImgUrl(ogImageContent);
-                        contentsRepository.save(contentsMapper.toEntity(contentsRes));
-                        updatedContentsResList.add(contentsRes);
+                        Contents updatedContentsEntity = contentsRepository.save(contentsMapper.toEntity(contentsRes));
+                        updatedContentsResList.add(contentsMapper.toDto(updatedContentsEntity));
                         break; // 이미지 URL을 찾았으면 더 이상 검색하지 않도록 종료
                     }
                 }
