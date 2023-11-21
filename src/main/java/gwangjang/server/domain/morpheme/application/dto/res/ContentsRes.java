@@ -22,6 +22,8 @@ public class ContentsRes {
     private String pubDate;
     private String topic;
 
+    private String imgUrl;
+
     public ContentsRes toDto(Contents contents) {
         ContentsRes contentsDto = new ContentsRes();
         contentsDto.setType(contents.getType());

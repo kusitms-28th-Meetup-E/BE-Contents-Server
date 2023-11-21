@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 import java.util.ArrayList;
 import java.util.List;
 
+
 @NoArgsConstructor
 @Getter
 @Entity
@@ -34,6 +35,8 @@ public class Contents extends BaseEntity {
     private String pubDate;
 
     private String topic;
+
+    private String imgUrl;
 
     @OneToMany(fetch = FetchType.LAZY)
     @JsonIgnore

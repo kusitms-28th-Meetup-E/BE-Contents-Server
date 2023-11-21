@@ -9,18 +9,29 @@ import gwangjang.server.domain.morpheme.application.service.ContentsSubscribeUse
 import gwangjang.server.domain.morpheme.domain.entity.Contents;
 import gwangjang.server.domain.morpheme.domain.entity.constant.ApiType;
 import gwangjang.server.domain.morpheme.domain.service.ContentsService;
+import gwangjang.server.domain.morpheme.domain.service.ImageUrlUpdateService;
 import gwangjang.server.domain.morpheme.domain.service.NewsAPIService;
 import gwangjang.server.domain.morpheme.presentation.constant.ContentsResponseMessage;
 import gwangjang.server.global.feign.client.FindKeywordFeignClient;
 import gwangjang.server.global.response.SuccessResponse;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
+
+import java.io.IOException;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static gwangjang.server.domain.morpheme.presentation.constant.ContentsResponse.GET_MY_CONTENTS;
 
@@ -35,8 +46,12 @@ public class ContentsController {
 
     private final NewsAPIService newsAPIService;
 
+    private final ImageUrlUpdateService imageUrlUpdateService;
+
     @GetMapping("/contents/{type}")
-    public  ResponseEntity<SuccessResponse<List<ContentsRes>>> getYoutubeContents(@PathVariable ApiType type){
+    public  ResponseEntity<SuccessResponse<List<ContentsRes>>> getYoutubeContents(@PathVariable ApiType type) throws NoSuchAlgorithmException, KeyManagementException {
+//        List<ContentsRes> contents = this.contentsService.getContents(type);
+//        imageUrlUpdateService.updateImageUrl(contents);
         return ResponseEntity.ok(SuccessResponse.create(ContentsResponseMessage.GET_CONTENTS_SUCCESS.getMessage(),this.contentsService.getContents(type)));
     }
 
@@ -66,6 +81,46 @@ public class ContentsController {
     public ResponseEntity<SuccessResponse<List<ContentsRes>>> getContentsByLoginId(@RequestHeader(value = "user-id") String socialId) {
         return ResponseEntity.ok(SuccessResponse.create(ContentsResponseMessage.GET_CONTENTS_SUCCESS.getMessage(),this.contentsService.findContentsByLoginId(socialId)));
     }
+
+
+
+//    @PostMapping("/test")
+//    public String getContentsImg(String url) {
+//        try {
+//            // URL에서 HTML을 가져옴
+//            Document document = Jsoup.connect(url).get();
+//
+//            // 메타태그 선택
+//            Elements metaTags = document.select("meta");
+//
+//            // 각 메타태그의 name과 content 속성 출력
+//            for (Element metaTag : metaTags) {
+//                String name = metaTag.attr("name");
+//                String property = metaTag.attr("property");
+//                String content = metaTag.attr("content");
+//
+//                // 정규표현식을 사용하여 twitter:image 또는 og:image의 content 속성 추출
+//                Pattern twitterPattern = Pattern.compile("name=\"twitter:image\"\\s*content=\"([^\"]+)\"");
+//                Pattern ogPattern = Pattern.compile("property=\"og:image\"\\s*content=\"([^\"]+)\"");
+//
+//                Matcher twitterMatcher = twitterPattern.matcher(metaTag.outerHtml());
+//                Matcher ogMatcher = ogPattern.matcher(metaTag.outerHtml());
+//
+//                if (twitterMatcher.find()) {
+//                    String twitterImageContent = twitterMatcher.group(1);
+//                    System.out.println("Twitter Image Content: " + twitterImageContent);
+//                } else if (ogMatcher.find()) {
+//                    String ogImageContent = ogMatcher.group(1);
+//                    System.out.println("OG Image Content: " + ogImageContent);
+//                }
+//            }
+//
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//
+//        return null;
+//    }
 
 
     //컨텐츠 가져오는 API
