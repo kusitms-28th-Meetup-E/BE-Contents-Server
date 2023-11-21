@@ -82,47 +82,6 @@ public class ContentsController {
         return ResponseEntity.ok(SuccessResponse.create(ContentsResponseMessage.GET_CONTENTS_SUCCESS.getMessage(),this.contentsService.findContentsByLoginId(socialId)));
     }
 
-
-
-//    @PostMapping("/test")
-//    public String getContentsImg(String url) {
-//        try {
-//            // URL에서 HTML을 가져옴
-//            Document document = Jsoup.connect(url).get();
-//
-//            // 메타태그 선택
-//            Elements metaTags = document.select("meta");
-//
-//            // 각 메타태그의 name과 content 속성 출력
-//            for (Element metaTag : metaTags) {
-//                String name = metaTag.attr("name");
-//                String property = metaTag.attr("property");
-//                String content = metaTag.attr("content");
-//
-//                // 정규표현식을 사용하여 twitter:image 또는 og:image의 content 속성 추출
-//                Pattern twitterPattern = Pattern.compile("name=\"twitter:image\"\\s*content=\"([^\"]+)\"");
-//                Pattern ogPattern = Pattern.compile("property=\"og:image\"\\s*content=\"([^\"]+)\"");
-//
-//                Matcher twitterMatcher = twitterPattern.matcher(metaTag.outerHtml());
-//                Matcher ogMatcher = ogPattern.matcher(metaTag.outerHtml());
-//
-//                if (twitterMatcher.find()) {
-//                    String twitterImageContent = twitterMatcher.group(1);
-//                    System.out.println("Twitter Image Content: " + twitterImageContent);
-//                } else if (ogMatcher.find()) {
-//                    String ogImageContent = ogMatcher.group(1);
-//                    System.out.println("OG Image Content: " + ogImageContent);
-//                }
-//            }
-//
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//
-//        return null;
-//    }
-
-
     //컨텐츠 가져오는 API
     //유튜브에서 제공해주는 할당량 다 사용해서 어떻게 할지 얘기할 것.
     // 진짜 조금 지원해줌 ㅜ
