@@ -44,7 +44,8 @@ public class ImageUrlUpdateService {
             contentsRepository.save(contentsEntity);
         });
     }
-    public List<ContentsRes> updateImageUrl(List<ContentsRes> contentsResList) throws KeyManagementException, NoSuchAlgorithmException {
+    @Transactional
+    public void updateImageUrl(List<ContentsRes> contentsResList) throws KeyManagementException, NoSuchAlgorithmException {
 
         TrustManager[] trustAllCerts = new TrustManager[] {
                 new X509TrustManager() {
@@ -90,15 +91,13 @@ public class ImageUrlUpdateService {
                         String twitterImageContent = twitterMatcher.group(1);
                         System.out.println(twitterImageContent);
                         contentsRes.setImgUrl(twitterImageContent);
-                        Contents updatedContentsEntity = contentsRepository.save(contentsMapper.toEntity(contentsRes));
-                        updatedContentsResList.add(contentsMapper.toDto(updatedContentsEntity));
+                        contentsRepository.updateContentsImageUrl(contentsRes.getContents_id(), twitterImageContent);
                         break; // 이미지 URL을 찾았으면 더 이상 검색하지 않도록 종료
                     } else if (ogMatcher.find()) {
                         String ogImageContent = ogMatcher.group(1);
                         System.out.println(ogImageContent);
                         contentsRes.setImgUrl(ogImageContent);
-                        Contents updatedContentsEntity = contentsRepository.save(contentsMapper.toEntity(contentsRes));
-                        updatedContentsResList.add(contentsMapper.toDto(updatedContentsEntity));
+                        contentsRepository.updateContentsImageUrl(contentsRes.getContents_id(), ogImageContent);
                         break; // 이미지 URL을 찾았으면 더 이상 검색하지 않도록 종료
                     }
                 }
@@ -107,10 +106,6 @@ public class ImageUrlUpdateService {
                 e.printStackTrace();
             }
         }
-
-        // 이미지 URL을 찾을 수 없는 경우 기존의 imgUrl 값 유지
-        updateImageUrlAndSave(updatedContentsResList);
-        return updatedContentsResList;
     }
 
 

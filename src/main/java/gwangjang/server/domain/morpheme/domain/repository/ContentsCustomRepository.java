@@ -9,5 +9,6 @@ public interface ContentsCustomRepository {
     List<ContentsDataRes> getContentsByIssueId(String issue);
     List<Contents> findAllOrderByLikeCountDesc();
     List<Contents> findContentsByLoginId(String loginId);
+    void updateContentsImageUrl(Integer contentsId, String newImageUrl);
 
 }

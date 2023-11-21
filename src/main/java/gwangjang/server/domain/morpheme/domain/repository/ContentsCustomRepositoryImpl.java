@@ -78,5 +78,13 @@ public class ContentsCustomRepositoryImpl implements ContentsCustomRepository {
         return result;
     }
 
+    public void updateContentsImageUrl(Integer contentsId, String newImageUrl) {
+        queryFactory
+                .update(contents)
+                .set(contents.imgUrl, newImageUrl)
+                .where(contents.contents_id.eq(contentsId))
+                .execute();
+    }
+
 }
 

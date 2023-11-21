@@ -2,6 +2,7 @@ package gwangjang.server.domain.morpheme.domain.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import gwangjang.server.domain.morpheme.application.dto.res.ContentsRes;
+import gwangjang.server.domain.morpheme.application.mapper.ContentsMapper;
 import gwangjang.server.domain.morpheme.domain.entity.Contents;
 import gwangjang.server.domain.morpheme.domain.entity.constant.ApiType;
 import gwangjang.server.domain.morpheme.domain.repository.ContentsRepository;
@@ -33,9 +34,12 @@ public class NewsAPIService {
     private final RestTemplate restTemplate;
     private final ContentsRepository contentsRepository;
 
-    public NewsAPIService(RestTemplate restTemplate, ContentsRepository contentsRepository) {
+    private final ContentsMapper contentsMapper;
+
+    public NewsAPIService(RestTemplate restTemplate, ContentsRepository contentsRepository, ContentsMapper contentsMapper) {
         this.restTemplate = restTemplate;
         this.contentsRepository = contentsRepository;
+        this.contentsMapper = contentsMapper;
     }
 
     public String naverAPI(String name) {
@@ -81,7 +85,7 @@ public class NewsAPIService {
                 contentsRes.setPubDate(pubDate);
                 contentsRes.setType(ApiType.NAVER);
                 contentsRes.setIssueTitle(name);
-                contentsRepository.save(Contents.toEntity(contentsRes));
+                contentsRepository.save(contentsMapper.toEntity(contentsRes));
             }
         } catch (org.json.simple.parser.ParseException e) {
             // Handle the ParseException locally

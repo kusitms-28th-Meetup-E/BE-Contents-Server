@@ -65,16 +65,4 @@ public class Contents extends BaseEntity {
         this.keyword = keyword;
         this.pubDate = pubDate;
     }
-
-    public static Contents toEntity(ContentsRes contentsRes) {
-        return new Contents(
-                contentsRes.getUrl(),
-                contentsRes.getTitle(),
-                contentsRes.getDescription(),
-                contentsRes.getType(),
-                contentsRes.getIssueTitle(),
-                contentsRes.getKeyword(),
-                contentsRes.getPubDate()
-        );
-    }
 }
