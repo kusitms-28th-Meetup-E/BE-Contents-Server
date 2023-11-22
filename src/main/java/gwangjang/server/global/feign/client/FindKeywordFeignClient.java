@@ -1,6 +1,6 @@
 package gwangjang.server.global.feign.client;
 
-import gwangjang.server.domain.morpheme.application.dto.req.TotalReq;
+import gwangjang.server.domain.contents.application.dto.req.TotalReq;
 import gwangjang.server.global.response.SuccessResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;

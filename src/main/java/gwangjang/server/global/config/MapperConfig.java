@@ -1,6 +1,6 @@
 package gwangjang.server.global.config;
 
-import gwangjang.server.domain.morpheme.application.mapper.ContentsMapper;
+import gwangjang.server.domain.contents.application.mapper.ContentsMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
