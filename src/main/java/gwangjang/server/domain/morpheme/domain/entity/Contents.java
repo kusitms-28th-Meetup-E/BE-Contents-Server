@@ -6,10 +6,7 @@ import gwangjang.server.domain.morpheme.application.dto.res.ContentsRes;
 import gwangjang.server.domain.morpheme.domain.entity.constant.ApiType;
 import gwangjang.server.global.entity.BaseEntity;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +16,7 @@ import java.util.List;
 @Getter
 @Entity
 @AllArgsConstructor
+@Setter
 public class Contents extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -86,47 +86,62 @@ public class ContentsServiceImpl implements ContentsService{
             for (int i = 0; i < items.length(); i++) {
                 JSONObject item = items.getJSONObject(i);
                 System.out.println("Processing item: " + item);
-                Contents youtubeContent = createYoutubeContent(item, singleSearch);
-                contentMonos.add(saveContent(youtubeContent));
+                createYoutubeContent(item, singleSearch);
+                //contentMonos.add(saveContent(youtubeContent));
             }
 
             return Flux.concat(contentMonos).then();
         });
     }
 
-    private Contents createYoutubeContent(JSONObject item, String singleSearch) {
+    private void createYoutubeContent(JSONObject item, String singleSearch) {
         
         JSONObject id = item.optJSONObject("id");
         if (id == null) {
             System.err.println("No 'id' found in the item: " + item);
-            return null;
+
         }
 
         String videoId = id.optString("videoId");
         if (videoId.isEmpty()) {
             System.err.println("No 'videoId' found in the 'id' of the item: " + item);
-            return null;
+
         }
 
         JSONObject snippet = item.optJSONObject("snippet");
         if (snippet == null) {
             System.err.println("No 'snippet' found in the item: " + item);
-            return null;
+
         }
+        // Extract thumbnail information
+        JSONObject thumbnails = snippet.optJSONObject("thumbnails");
+        if (thumbnails == null) {
+            System.err.println("No 'thumbnails' found in the snippet: " + snippet);
+
+        }
+
+        JSONObject defaultThumbnail = thumbnails.optJSONObject("default");
+        if (defaultThumbnail == null) {
+            System.err.println("No 'default' thumbnail found in the thumbnails: " + thumbnails);
+
+        }
+        String thumbnailUrl = defaultThumbnail.optString("url");
 
         String title = snippet.optString("title");
         String description = snippet.optString("description");
         String pubDate = snippet.optString("publishedAt");
 
-        ContentsRes youtubeContent = new ContentsRes();
+        Contents youtubeContent = new Contents();
         youtubeContent.setType(ApiType.YOUTUBE);
         youtubeContent.setUrl(videoId);
         youtubeContent.setTitle(title);
         youtubeContent.setDescription(description);
         youtubeContent.setPubDate(pubDate);
         youtubeContent.setIssueTitle(singleSearch);
+        youtubeContent.setImgUrl(thumbnailUrl);
 
-        return contentsMapper.toEntity(youtubeContent);
+        contentsRepository.save(youtubeContent);
+
     }
 
     @Transactional

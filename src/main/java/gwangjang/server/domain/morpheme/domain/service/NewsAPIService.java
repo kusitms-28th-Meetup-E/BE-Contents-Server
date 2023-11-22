@@ -34,7 +34,7 @@ public class NewsAPIService {
     private final RestTemplate restTemplate;
     private final ContentsRepository contentsRepository;
 
-    private final ContentsMapper contentsMapper;
+    private final ContentsMapper contentsMapper ;
 
     public NewsAPIService(RestTemplate restTemplate, ContentsRepository contentsRepository, ContentsMapper contentsMapper) {
         this.restTemplate = restTemplate;
