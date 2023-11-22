@@ -1,6 +1,7 @@
 package gwangjang.server.domain.contents.presentation;
 
 import gwangjang.server.domain.contents.application.dto.res.BubbleChartRes;
+import gwangjang.server.domain.contents.application.dto.res.BubbleFrontRes;
 import gwangjang.server.domain.contents.application.dto.res.ContentsDataRes;
 import gwangjang.server.domain.contents.application.dto.res.ContentsRes;
 import gwangjang.server.domain.contents.application.service.ContentsSubscribeUseCase;
@@ -19,7 +20,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import static gwangjang.server.domain.contents.presentation.constant.ContentsResponse.GET_MY_CONTENTS;
 import static gwangjang.server.domain.contents.presentation.constant.ContentsResponseMessage.GET_CONTENTS_SUCCESS;
@@ -76,8 +79,21 @@ public class ContentsController {
         return ResponseEntity.ok(SuccessResponse.create(GET_MY_CONTENTS.getMessage(), this.contentsSubscribeUseCase.getContentsByIssue(issue)));
     }
     @GetMapping("/bubbleChart/{issue}")
-    public ResponseEntity<SuccessResponse<List<BubbleChartRes>>> getBubbleChart(@PathVariable("issue")String issue) {
-        return ResponseEntity.ok(SuccessResponse.create(GET_CONTENTS_SUCCESS.getMessage(), this.contentsSubscribeUseCase.getBubbleChart(issue)));
+    public ResponseEntity<SuccessResponse<List<BubbleFrontRes>>> getBubbleChart(@PathVariable("issue") String issue) {
+        List<BubbleChartRes> bubbleChartList = this.contentsSubscribeUseCase.getBubbleChart(issue);
+        List<BubbleFrontRes> result = new ArrayList<>();
+        Random rand = new Random();
+
+        for (BubbleChartRes bubbleChart : bubbleChartList) {
+            Long x = Long.parseLong(bubbleChart.getDate());
+            Long y = (long) (rand.nextInt(10) + 1); // Random value between 1 and 10
+            Long z = bubbleChart.getRank();
+            String name = bubbleChart.getKeyword();
+
+            result.add(new BubbleFrontRes(x, y, z, name));
+        }
+
+        return ResponseEntity.ok(SuccessResponse.create(GET_CONTENTS_SUCCESS.getMessage(), result));
     }
 
 

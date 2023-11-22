@@ -8,7 +8,10 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Service
 @Transactional
@@ -28,6 +31,14 @@ public class ContentsSubscribeUseCase {
     }
 
     public List<BubbleChartRes> getBubbleChart(String issueTitle) {
-        return contentsQueryService.getBubbleChart(issueTitle);
+        List<BubbleChartRes> list = contentsQueryService.getBubbleChart(issueTitle);
+//        List<BubbleChartRes> selectedList = new ArrayList<>();
+//        for (int i = 39; i < list.size(); i += 40) {
+//            selectedList.add(list.get(i));
+//        }
+        for(int i=0; i<list.size(); i++){
+            list.get(i).setRank((40L*(i+1)));
+        }
+        return list;
     }
 }
