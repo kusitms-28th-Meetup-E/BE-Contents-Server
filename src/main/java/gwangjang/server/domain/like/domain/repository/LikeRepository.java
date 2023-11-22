@@ -2,7 +2,7 @@ package gwangjang.server.domain.like.domain.repository;
 
 import gwangjang.server.domain.like.domain.entity.ContentLike;
 
-import gwangjang.server.domain.morpheme.domain.entity.Contents;
+import gwangjang.server.domain.contents.domain.entity.Contents;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
 

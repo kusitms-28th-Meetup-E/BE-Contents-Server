@@ -1,7 +1,7 @@
 package gwangjang.server.domain.like.domain.entity;
 
 
-import gwangjang.server.domain.morpheme.domain.entity.Contents;
+import gwangjang.server.domain.contents.domain.entity.Contents;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
