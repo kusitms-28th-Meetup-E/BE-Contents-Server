@@ -84,6 +84,9 @@ public class ContentsController {
         List<BubbleFrontRes> result = new ArrayList<>();
         Random rand = new Random();
 
+        // Add element at the beginning
+        result.add(new BubbleFrontRes(0L, null, 0L, ""));
+
         for (BubbleChartRes bubbleChart : bubbleChartList) {
             Long x = Long.parseLong(bubbleChart.getDate());
             Long y = (long) (rand.nextInt(10) + 1); // Random value between 1 and 10
@@ -91,6 +94,12 @@ public class ContentsController {
             String name = bubbleChart.getKeyword();
 
             result.add(new BubbleFrontRes(x, y, z, name));
+        }
+
+        // Add element at the end with values from the last index
+        if (!bubbleChartList.isEmpty()) {
+            BubbleChartRes lastBubbleChart = bubbleChartList.get(bubbleChartList.size() - 1);
+            result.add(new BubbleFrontRes(Long.parseLong(lastBubbleChart.getDate()), null, 0L, ""));
         }
 
         return ResponseEntity.ok(SuccessResponse.create(GET_CONTENTS_SUCCESS.getMessage(), result));
