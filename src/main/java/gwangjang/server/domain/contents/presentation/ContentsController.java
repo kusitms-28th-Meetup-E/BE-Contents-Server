@@ -99,7 +99,7 @@ public class ContentsController {
         // Add element at the end with values from the last index
         if (!bubbleChartList.isEmpty()) {
             BubbleChartRes lastBubbleChart = bubbleChartList.get(bubbleChartList.size() - 1);
-            result.add(new BubbleFrontRes(Long.parseLong(lastBubbleChart.getDate()), null, 0L, ""));
+            result.add(new BubbleFrontRes(12L, null, 0L, ""));
         }
 
         return ResponseEntity.ok(SuccessResponse.create(GET_CONTENTS_SUCCESS.getMessage(), result));
