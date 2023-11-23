@@ -1,9 +1,6 @@
 package gwangjang.server.domain.contents.presentation;
 
-import gwangjang.server.domain.contents.application.dto.res.BubbleChartRes;
-import gwangjang.server.domain.contents.application.dto.res.BubbleFrontRes;
-import gwangjang.server.domain.contents.application.dto.res.ContentsDataRes;
-import gwangjang.server.domain.contents.application.dto.res.ContentsRes;
+import gwangjang.server.domain.contents.application.dto.res.*;
 import gwangjang.server.domain.contents.application.service.ContentsSubscribeUseCase;
 
 import gwangjang.server.domain.contents.domain.entity.constant.ApiType;
@@ -64,7 +61,7 @@ public class ContentsController {
         return ResponseEntity.ok(SuccessResponse.create(GET_CONTENTS_SUCCESS.getMessage(),this.newsAPIService.naverAPI("test")));
     }
     @GetMapping("/contents/like")
-    public ResponseEntity<SuccessResponse<List<ContentsRes>>> getContentLikeCount() {
+    public ResponseEntity<SuccessResponse<List<ContentsWithLikeCount>>> getContentLikeCount() {
         return ResponseEntity.ok(SuccessResponse.create(GET_CONTENTS_SUCCESS.getMessage(),this.contentsService.getContentLikeCount()));
     }
     @PostMapping("/my-page/like")

@@ -6,10 +6,9 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import gwangjang.server.domain.contents.application.dto.res.BubbleChartRes;
+import gwangjang.server.domain.contents.application.dto.res.*;
 import gwangjang.server.domain.contents.domain.entity.constant.ApiType;
 import gwangjang.server.domain.like.domain.entity.QContentLike;
-import gwangjang.server.domain.contents.application.dto.res.ContentsDataRes;
 import gwangjang.server.domain.contents.domain.entity.Contents;
 import gwangjang.server.domain.contents.domain.entity.QContents;
 import jakarta.persistence.EntityManager;
@@ -47,12 +46,16 @@ public class ContentsCustomRepositoryImpl implements ContentsCustomRepository {
                 .limit(10).fetch();
     }
 
-    public List<Contents> findAllOrderByLikeCountDesc() {
+    public List<ContentsWithLikeCount> findAllOrderByLikeCountDesc() {
         QContents contents = QContents.contents;
         QContentLike contentLike = QContentLike.contentLike;
 
-        List<Contents> result = queryFactory
-                .select(contents)
+        List<ContentsWithLikeCount> result = queryFactory
+                .select(Projections.constructor(
+                        ContentsWithLikeCount.class,
+                        contents,
+                        contentLike.likeId.count().as("likeCount")
+                ))
                 .from(contents)
                 .leftJoin(contentLike).on(contents.contents_id.eq(contentLike.contents.contents_id))
                 .groupBy(contents.contents_id)
@@ -93,9 +96,51 @@ public class ContentsCustomRepositoryImpl implements ContentsCustomRepository {
     }
 
 
-
-
-
+//    public List<ContentsLikeCount> searchContentsWithLikeCount(String keyword, ApiType type, String loginId) {
+//        QContents contents = QContents.contents;
+//        QContentLike contentLike = QContentLike.contentLike;
+//
+//        List<Tuple> result = queryFactory
+//                .select(
+//                        contents.contents_id,
+//                        contents.url,
+//                        contents.title,
+//                        contents.description,
+//                        contents.type,
+//                        contents.issueTitle,
+//                        contents.keyword,
+//                        contents.pubDate,
+//                        contents.topic,
+//                        contents.imgUrl,
+//                        contentLike.likeId.count().coalesce(0L).as("likeCount"),
+//                        contentLike.likeId.count().coalesce(0L)
+//                                .as("userLiked")
+//                )
+//                .from(contents)
+//                .leftJoin(contentLike).on(contents.contents_id.eq(contentLike.contents.contents_id).and(contentLike.loginId.eq(loginId)))
+//                .where(contents.keyword.containsIgnoreCase(keyword).and(contents.type.eq(type)))
+//                .groupBy(contents.contents_id, contents.url, contents.title, contents.description, contents.type, contents.issueTitle,
+//                        contents.keyword, contents.pubDate, contents.topic, contents.imgUrl)
+//                .fetch();
+//
+//        return result.stream()
+//                .map(tuple -> new ContentsLikeCount(
+//                        tuple.get(contents.contents_id),
+//                        tuple.get(contents.url),
+//                        tuple.get(contents.title),
+//                        tuple.get(contents.description),
+//                        tuple.get(contents.type),
+//                        tuple.get(contents.issueTitle),
+//                        tuple.get(contents.keyword),
+//                        tuple.get(contents.pubDate),
+//                        tuple.get(contents.topic),
+//                        tuple.get(contents.imgUrl),
+//                        tuple.get("likeCount", Integer.class), // Change to Integer.class
+//                        tuple.get("userLiked", Boolean.class)
+//                ))
+//                .collect(Collectors.toList());
+//
+//    }
 
 }
 
