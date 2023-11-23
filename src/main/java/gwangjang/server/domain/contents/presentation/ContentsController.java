@@ -45,9 +45,9 @@ public class ContentsController {
         return ResponseEntity.ok(SuccessResponse.create(GET_CONTENTS_SUCCESS.getMessage(),this.contentsService.getContents(type)));
     }
 
-    @GetMapping("/issueTitle/{issue}")
-    public ResponseEntity<SuccessResponse<List<ContentsRes>>> getContentsTitle(@PathVariable String issue) {
-        return ResponseEntity.ok(SuccessResponse.create(GET_CONTENTS_SUCCESS.getMessage(),this.contentsService.getContentsTitle(issue)));
+    @GetMapping("/issueTitle/{issue}/{type}")
+    public ResponseEntity<SuccessResponse<List<ContentsRes>>> getContentsTitleAndType(@PathVariable String issue, @PathVariable ApiType type) {
+        return ResponseEntity.ok(SuccessResponse.create(GET_CONTENTS_SUCCESS.getMessage(),this.contentsService.getContentsTitle(issue,type)));
     }
 
     @GetMapping("/keyword/{keyword}/{type}")

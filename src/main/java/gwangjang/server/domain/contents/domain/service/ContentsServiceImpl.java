@@ -161,8 +161,8 @@ public class ContentsServiceImpl implements ContentsService{
                 .collect(Collectors.toList());
     }
 
-    public List<ContentsRes> getContentsTitle(String issue) {
-        List<Contents> contents = contentsRepository.findByIssueTitleLike("%" + issue + "%");
+    public List<ContentsRes> getContentsTitle(String issue, ApiType type) {
+        List<Contents> contents = contentsRepository.findByIssueTitleLikeAndType("%" + issue + "%", type);
         return contents.stream()
                 .map(contentsMapper::toDto)
                 .collect(Collectors.toList());
