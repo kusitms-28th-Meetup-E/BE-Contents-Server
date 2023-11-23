@@ -82,32 +82,33 @@ public class ContentsController {
         List<BubbleFrontRes> result = new ArrayList<>();
         Random rand = new Random();
 
-        result.add(new BubbleFrontRes(6L, null, 0L, ""));
+        result.add(new BubbleFrontRes(null, 6, 0, 0));
 
-        Set<Long> usedRandomValues = new HashSet<>(); // to track used random values
+        Set<Integer> usedRandomValues = new HashSet<>(); // to track used random values
 
         for (BubbleChartRes bubbleChart : bubbleChartList) {
-            Long x = Long.parseLong(bubbleChart.getDate());
-            Long y;
+            int x = Integer.parseInt(bubbleChart.getDate());
+            Integer y;
 
             // Generate a unique random value
             do {
-                y = (long) (rand.nextInt(10) + 1);
+                y = rand.nextInt(10) + 1;
             } while (!usedRandomValues.add(y));
 
-            Long z = bubbleChart.getRank();
+            int z = Math.toIntExact(bubbleChart.getRank());
             String name = bubbleChart.getKeyword();
 
-            result.add(new BubbleFrontRes(x, y, z, name));
+            result.add(new BubbleFrontRes(name,x, y, z));
         }
 
-        // Add element at the end with values from the last index
+// Add element at the end with values from the last index
         if (!bubbleChartList.isEmpty()) {
             BubbleChartRes lastBubbleChart = bubbleChartList.get(bubbleChartList.size() - 1);
-            result.add(new BubbleFrontRes(12L, null, 0L, ""));
+            result.add(new BubbleFrontRes("",12, 0, 0 ));
         }
 
         return ResponseEntity.ok(SuccessResponse.create(GET_CONTENTS_SUCCESS.getMessage(), result));
+
     }
 
 
