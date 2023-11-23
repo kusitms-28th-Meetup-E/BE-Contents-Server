@@ -20,9 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 import static gwangjang.server.domain.contents.presentation.constant.ContentsResponse.GET_MY_CONTENTS;
 import static gwangjang.server.domain.contents.presentation.constant.ContentsResponseMessage.GET_CONTENTS_SUCCESS;
@@ -84,12 +82,19 @@ public class ContentsController {
         List<BubbleFrontRes> result = new ArrayList<>();
         Random rand = new Random();
 
-        // Add element at the beginning
-        result.add(new BubbleFrontRes(0L, null, 0L, ""));
+        result.add(new BubbleFrontRes(6L, null, 0L, ""));
+
+        Set<Long> usedRandomValues = new HashSet<>(); // to track used random values
 
         for (BubbleChartRes bubbleChart : bubbleChartList) {
             Long x = Long.parseLong(bubbleChart.getDate());
-            Long y = (long) (rand.nextInt(10) + 1); // Random value between 1 and 10
+            Long y;
+
+            // Generate a unique random value
+            do {
+                y = (long) (rand.nextInt(10) + 1);
+            } while (!usedRandomValues.add(y));
+
             Long z = bubbleChart.getRank();
             String name = bubbleChart.getKeyword();
 
