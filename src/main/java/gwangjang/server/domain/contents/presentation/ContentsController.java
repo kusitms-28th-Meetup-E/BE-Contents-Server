@@ -82,7 +82,7 @@ public class ContentsController {
         List<BubbleFrontRes> result = new ArrayList<>();
         Random rand = new Random();
 
-        result.add(new BubbleFrontRes(null, 6, 0, 0));
+        result.add(new BubbleFrontRes("", 6, 0, 0));
 
         Set<Integer> usedRandomValues = new HashSet<>(); // to track used random values
 
