@@ -13,7 +13,7 @@ import java.util.List;
 public interface ContentsRepository extends JpaRepository<Contents, Integer>,ContentsCustomRepository{
 
     List<Contents> findByType(ApiType type);
-    List<Contents> findByIssueTitleLike(String issue);
+    List<Contents> findByIssueTitleLikeAndType(String issue,ApiType type);
     List<Contents> findByKeywordLikeAndTypeOrderByPubDateDesc(String issueTitle, ApiType type);
 
     @Query(

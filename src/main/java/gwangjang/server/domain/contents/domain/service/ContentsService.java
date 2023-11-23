@@ -10,7 +10,7 @@ import java.util.List;
 public interface ContentsService {
     public Mono<Void> saveYoutubeContent(String[] search);
     public List<ContentsRes> getContents(ApiType type);
-    List<ContentsRes> getContentsTitle(String issue);
+    List<ContentsRes> getContentsTitle(String issue, ApiType type);
     List<ContentsRes> getKeywordAndType(String Keyword, ApiType apiType);
     ContentsRes getContentsById(Integer contentsId);
     List<ContentsRes> getContentLikeCount();
