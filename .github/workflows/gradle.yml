@@ -60,4 +60,4 @@
           script: |
             docker pull ${{ secrets.DOCKER_USERNAME }}/contents:latest
             docker image prune -a -f
-            docker-compose-contents up -d
+            docker-compose up -d
