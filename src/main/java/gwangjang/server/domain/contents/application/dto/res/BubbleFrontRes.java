@@ -7,8 +7,9 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class BubbleFrontRes {
-    private Long x;
-    private Long y;
-    private Long z;
     private String name;
+    private int x;
+    private int y;
+    private int z;
+
 }
