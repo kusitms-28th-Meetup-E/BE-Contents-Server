@@ -163,7 +163,7 @@ public class ContentsServiceImpl implements ContentsService{
     }
 
     public List<ContentsRes> getContentsTitle(String issue, ApiType type) {
-        List<Contents> contents = contentsRepository.findByIssueTitleLikeAndType("%" + issue + "%", type);
+        List<Contents> contents = contentsRepository.findByIssueTitleLikeAndType("%" + issue + "%", type).subList(0,20);
         return contents.stream()
                 .map(contentsMapper::toDto)
                 .collect(Collectors.toList());
