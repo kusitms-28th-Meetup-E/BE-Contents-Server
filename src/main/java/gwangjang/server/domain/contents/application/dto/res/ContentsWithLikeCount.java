@@ -1,14 +1,10 @@
 package gwangjang.server.domain.contents.application.dto.res;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import gwangjang.server.domain.contents.domain.entity.Contents;
 import gwangjang.server.domain.contents.domain.entity.constant.ApiType;
-import lombok.*;
 
-@Getter
-@Builder
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
-public class ContentsRes {
+public class ContentsWithLikeCount {
     private Integer contents_id;
     private String url;
     private String title;
@@ -21,5 +17,8 @@ public class ContentsRes {
     private String imgUrl;
 
     private Long likeCount;
+
+    private long likeStatus;
+
 
 }
