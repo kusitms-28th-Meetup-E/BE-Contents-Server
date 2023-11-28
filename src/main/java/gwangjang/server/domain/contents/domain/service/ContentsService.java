@@ -1,5 +1,6 @@
 package gwangjang.server.domain.contents.domain.service;
 import gwangjang.server.domain.contents.application.dto.res.ContentsRes;
+import gwangjang.server.domain.contents.application.dto.res.ContentsWithLikeCountRes;
 import gwangjang.server.domain.contents.application.dto.res.ContentsWithLikeCount;
 import gwangjang.server.domain.contents.domain.entity.constant.ApiType;
 import gwangjang.server.global.annotation.DomainService;
@@ -16,6 +17,8 @@ public interface ContentsService {
     ContentsRes getContentsById(Integer contentsId);
     List<ContentsWithLikeCount> getContentLikeCount();
     List<ContentsRes> findContentsByLoginId(String loginId);
-
+    List<ContentsWithLikeCountRes> getContentsWithLikeCount(String userId,ApiType type);
+    List<ContentsWithLikeCountRes> getContentsKeyword(String userId,ApiType type, String keyword);
+    List<ContentsWithLikeCountRes> getContentsIssue(String userId,ApiType type, String keyword);
 }
 

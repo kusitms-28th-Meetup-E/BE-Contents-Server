@@ -107,6 +107,23 @@ public class ContentsController {
         return ResponseEntity.ok(SuccessResponse.create(GET_CONTENTS_SUCCESS.getMessage(), result));
 
     }
+    @GetMapping("/contents/all/like/{type}")
+    public ResponseEntity<SuccessResponse<List<ContentsWithLikeCountRes>>> getContentsWithLikeCount(@RequestHeader(value = "user-id") String socialId,@PathVariable ApiType type) {
+        String userId = "testId";
+        System.out.println(type);
+        return ResponseEntity.ok(SuccessResponse.create(GET_MY_CONTENTS.getMessage(), this.contentsService.getContentsWithLikeCount(socialId,type)));
+    }//@RequestHeader(value = "user-id") String socialId
 
-
+    @GetMapping("/contents/keyword/{keyword}/{type}")
+    public ResponseEntity<SuccessResponse<List<ContentsWithLikeCountRes>>> getContentsKeyword(@RequestHeader(value = "user-id") String socialId,@PathVariable ApiType type,@PathVariable("keyword") String keyword) {
+        String userId = "testId";
+        System.out.println(type);
+        return ResponseEntity.ok(SuccessResponse.create(GET_MY_CONTENTS.getMessage(), this.contentsService.getContentsKeyword(  socialId, type,  keyword)));
+    }//@RequestHeader(value = "user-id") String socialId
+    @GetMapping("/contents/issue/{issue}/{type}")
+    public ResponseEntity<SuccessResponse<List<ContentsWithLikeCountRes>>> getContentsIssue(@RequestHeader(value = "user-id") String socialId,@PathVariable("type") ApiType type,@PathVariable("issue") String issue) {
+        String userId = "testId";
+        System.out.println(type);
+        return ResponseEntity.ok(SuccessResponse.create(GET_MY_CONTENTS.getMessage(), this.contentsService.getContentsIssue(  socialId, type,  issue)));
+    }//@RequestHeader(value = "user-id") String socialId
 }

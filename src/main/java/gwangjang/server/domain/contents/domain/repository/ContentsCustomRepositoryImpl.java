@@ -6,6 +6,8 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import gwangjang.server.domain.contents.application.dto.res.BubbleChartRes;
+import gwangjang.server.domain.contents.application.dto.res.ContentsWithLikeCountRes;
 import gwangjang.server.domain.contents.application.dto.res.*;
 import gwangjang.server.domain.contents.domain.entity.constant.ApiType;
 import gwangjang.server.domain.like.domain.entity.QContentLike;
@@ -95,6 +97,87 @@ public class ContentsCustomRepositoryImpl implements ContentsCustomRepository {
                 .execute();
     }
 
+    public List<ContentsWithLikeCountRes> getContentsWithLikeCount(String userId, ApiType type) {
+        QContents contents = QContents.contents;
+        QContentLike contentLike = QContentLike.contentLike;
+
+        return queryFactory
+                .select(Projections.constructor(ContentsWithLikeCountRes.class,
+                        contents.contents_id,
+                        contents.url,
+                        contents.title,
+                        contents.description,
+                        contents.type,
+                        contents.issueTitle,
+                        contents.keyword,
+                        contents.pubDate,
+                        contents.topic,
+                        contents.imgUrl,
+                        contentLike.likeId.countDistinct().as("likeCount"),
+                        Expressions.booleanTemplate("coalesce((select 1 from ContentLike cl where cl.contents = {0} and cl.loginId = {1}), 0)",
+                                contents, userId).as("userLiked")))
+                .from(contents)
+                .where(contents.type.eq(type))
+                .leftJoin(contentLike).on(contentLike.contents.eq(contents))
+                .groupBy(contents.contents_id)
+                .orderBy(contentLike.likeId.count().desc())
+                .fetch();
+    }
+    public List<ContentsWithLikeCountRes> getContentsKeyword(String userId, ApiType type, String keyword) {
+        QContents contents = QContents.contents;
+        QContentLike contentLike = QContentLike.contentLike;
+
+        return queryFactory
+                .select(Projections.constructor(ContentsWithLikeCountRes.class,
+                        contents.contents_id,
+                        contents.url,
+                        contents.title,
+                        contents.description,
+                        contents.type,
+                        contents.issueTitle,
+                        contents.keyword,
+                        contents.pubDate,
+                        contents.topic,
+                        contents.imgUrl,
+                        contentLike.likeId.countDistinct().as("likeCount"),
+                        Expressions.booleanTemplate("coalesce((select 1 from ContentLike cl where cl.contents = {0} and cl.loginId = {1}), 0)",
+                                contents, userId).as("userLiked")))
+                .from(contents)
+                .leftJoin(contentLike).on(contentLike.contents.eq(contents))
+                .where(contents.type.eq(type) // Add the type parameter
+                        .and(contents.keyword.contains(keyword))) // Use contains for keyword
+                .groupBy(contents.contents_id)
+                .orderBy(contentLike.likeId.count().desc())
+                .fetch();
+    }
+
+    public List<ContentsWithLikeCountRes> getContentsIssue(String userId, ApiType type, String issue) {
+        QContents contents = QContents.contents;
+        QContentLike contentLike = QContentLike.contentLike;
+
+        return queryFactory
+                .select(Projections.constructor(ContentsWithLikeCountRes.class,
+                        contents.contents_id,
+                        contents.url,
+                        contents.title,
+                        contents.description,
+                        contents.type,
+                        contents.issueTitle,
+                        contents.keyword,
+                        contents.pubDate,
+                        contents.topic,
+                        contents.imgUrl,
+                        contentLike.likeId.countDistinct().as("likeCount"),
+                        Expressions.booleanTemplate("coalesce((select 1 from ContentLike cl where cl.contents = {0} and cl.loginId = {1}), 0)",
+                                contents, userId).as("userLiked")))
+                .from(contents)
+                .leftJoin(contentLike).on(contentLike.contents.eq(contents))
+                .where(contents.type.eq(type) // Add the type parameter
+                        .and(contents.issueTitle.contains(issue))) // Use contains for keyword
+                .groupBy(contents.contents_id)
+                .orderBy(contentLike.likeId.count().desc())
+                .fetch();
+    }
 
 //    public List<ContentsLikeCount> searchContentsWithLikeCount(String keyword, ApiType type, String loginId) {
 //        QContents contents = QContents.contents;
@@ -141,6 +224,5 @@ public class ContentsCustomRepositoryImpl implements ContentsCustomRepository {
 //                .collect(Collectors.toList());
 //
 //    }
-
 }
 
