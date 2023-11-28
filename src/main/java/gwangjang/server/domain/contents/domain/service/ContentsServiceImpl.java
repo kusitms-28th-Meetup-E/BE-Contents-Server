@@ -1,6 +1,6 @@
 package gwangjang.server.domain.contents.domain.service;
-
 import gwangjang.server.domain.contents.application.dto.res.ContentsWithLikeCountRes;
+import gwangjang.server.domain.contents.application.dto.res.ContentsWithLikeCount;
 import gwangjang.server.domain.like.domain.repository.LikeRepository;
 import gwangjang.server.domain.contents.application.dto.res.ContentsRes;
 import gwangjang.server.domain.contents.application.mapper.ContentsMapper;
@@ -163,7 +163,7 @@ public class ContentsServiceImpl implements ContentsService{
     }
 
     public List<ContentsRes> getContentsTitle(String issue, ApiType type) {
-        List<Contents> contents = contentsRepository.findByIssueTitleLikeAndType("%" + issue + "%", type);
+        List<Contents> contents = contentsRepository.findByIssueTitleLikeAndType("%" + issue + "%", type).subList(0,20);
         return contents.stream()
                 .map(contentsMapper::toDto)
                 .collect(Collectors.toList());
@@ -182,12 +182,10 @@ public class ContentsServiceImpl implements ContentsService{
         return contentsMapper.toDto(contents);
     }
 
-    public List<ContentsRes> getContentLikeCount(){
-        List<Contents> contents = contentsRepository.findAllOrderByLikeCountDesc();
+    public List<ContentsWithLikeCount> getContentLikeCount(){
+        List<ContentsWithLikeCount> contents = contentsRepository.findAllOrderByLikeCountDesc();
 
-        return contents.stream()
-                .map(contentsMapper::toDto)
-                .collect(Collectors.toList());
+        return contents;
     }
     public List<ContentsRes> findContentsByLoginId(String loginId){
         List<Contents> contents = contentsRepository.findContentsByLoginId(loginId);

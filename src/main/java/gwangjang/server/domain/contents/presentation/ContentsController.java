@@ -61,7 +61,7 @@ public class ContentsController {
         return ResponseEntity.ok(SuccessResponse.create(GET_CONTENTS_SUCCESS.getMessage(),this.newsAPIService.naverAPI("test")));
     }
     @GetMapping("/contents/like")
-    public ResponseEntity<SuccessResponse<List<ContentsRes>>> getContentLikeCount() {
+    public ResponseEntity<SuccessResponse<List<ContentsWithLikeCount>>> getContentLikeCount() {
         return ResponseEntity.ok(SuccessResponse.create(GET_CONTENTS_SUCCESS.getMessage(),this.contentsService.getContentLikeCount()));
     }
     @PostMapping("/my-page/like")
