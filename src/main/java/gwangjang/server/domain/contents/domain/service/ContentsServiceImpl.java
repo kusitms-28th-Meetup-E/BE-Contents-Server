@@ -1,5 +1,6 @@
 package gwangjang.server.domain.contents.domain.service;
 
+import gwangjang.server.domain.contents.application.dto.res.ContentsWithLikeCountRes;
 import gwangjang.server.domain.like.domain.repository.LikeRepository;
 import gwangjang.server.domain.contents.application.dto.res.ContentsRes;
 import gwangjang.server.domain.contents.application.mapper.ContentsMapper;
@@ -194,6 +195,23 @@ public class ContentsServiceImpl implements ContentsService{
                 .map(contentsMapper::toDto)
                 .collect(Collectors.toList());
     }
+    //컨텐츠 전체 가져와서
+    //좋아요 숫자 가져와서
+    //유저 아이디 여부 값
+    public List<ContentsWithLikeCountRes> getContentsWithLikeCount(String userId,ApiType type){
+        List<ContentsWithLikeCountRes> contents = contentsRepository.getContentsWithLikeCount(userId, type);
 
+        return contents;
+    }
+    public List<ContentsWithLikeCountRes> getContentsKeyword(String userId,ApiType type, String keyword){
+        List<ContentsWithLikeCountRes> contents = contentsRepository.getContentsKeyword(userId, type,keyword);
+
+        return contents;
+    }
+    public List<ContentsWithLikeCountRes> getContentsIssue(String userId,ApiType type, String keyword){
+        List<ContentsWithLikeCountRes> contents = contentsRepository.getContentsIssue(userId, type,keyword);
+
+        return contents;
+    }
 
 }
