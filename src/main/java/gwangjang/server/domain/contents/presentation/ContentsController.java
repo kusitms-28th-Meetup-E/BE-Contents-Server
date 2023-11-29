@@ -70,7 +70,7 @@ public class ContentsController {
     }
 
     @GetMapping("/subscribe/{issue}")
-    public ResponseEntity<SuccessResponse<List<ContentsDataRes>>> getMySubscribe(@RequestHeader(value = "user-id") String socialId,@PathVariable("issue")String issue) {
+    public ResponseEntity<SuccessResponse<List<ContentsDataRes>>> getMySubscribe(@RequestHeader(value = "user-id") String socialId, @PathVariable("issue")String issue) {
         return ResponseEntity.ok(SuccessResponse.create(GET_MY_CONTENTS.getMessage(), this.contentsSubscribeUseCase.getContentsByIssue(issue)));
     }
     @GetMapping("/bubbleChart/{issue}")
@@ -108,22 +108,22 @@ public class ContentsController {
 
     }
     @GetMapping("/contents/all/like/{type}")
-    public ResponseEntity<SuccessResponse<List<ContentsWithLikeCountRes>>> getContentsWithLikeCount(@RequestHeader(value = "user-id") String socialId,@PathVariable ApiType type) {
+    public ResponseEntity<SuccessResponse<List<ContentsWithLikeCountRes>>> getContentsWithLikeCount(@RequestHeader(value = "user-id") String socialId,@PathVariable("type") ApiType type) {
         String userId = "testId";
         System.out.println(type);
-        return ResponseEntity.ok(SuccessResponse.create(GET_MY_CONTENTS.getMessage(), this.contentsService.getContentsWithLikeCount(socialId,type)));
+        return ResponseEntity.ok(SuccessResponse.create(GET_CONTENTS_SUCCESS.getMessage(), this.contentsService.getContentsWithLikeCount(socialId,type)));
     }//@RequestHeader(value = "user-id") String socialId
 
     @GetMapping("/contents/keyword/{keyword}/{type}")
-    public ResponseEntity<SuccessResponse<List<ContentsWithLikeCountRes>>> getContentsKeyword(@RequestHeader(value = "user-id") String socialId,@PathVariable ApiType type,@PathVariable("keyword") String keyword) {
+    public ResponseEntity<SuccessResponse<List<ContentsWithLikeCountRes>>> getContentsKeyword(@RequestHeader(value = "user-id") String socialId,@PathVariable("keyword") String keyword,@PathVariable("type") ApiType type) {
         String userId = "testId";
         System.out.println(type);
-        return ResponseEntity.ok(SuccessResponse.create(GET_MY_CONTENTS.getMessage(), this.contentsService.getContentsKeyword(  socialId, type,  keyword)));
+        return ResponseEntity.ok(SuccessResponse.create(GET_CONTENTS_SUCCESS.getMessage(), this.contentsService.getContentsKeyword(  socialId, type,  keyword)));
     }//@RequestHeader(value = "user-id") String socialId
     @GetMapping("/contents/issue/{issue}/{type}")
-    public ResponseEntity<SuccessResponse<List<ContentsWithLikeCountRes>>> getContentsIssue(@RequestHeader(value = "user-id") String socialId,@PathVariable("type") ApiType type,@PathVariable("issue") String issue) {
+    public ResponseEntity<SuccessResponse<List<ContentsWithLikeCountRes>>> getContentsIssue(@RequestHeader(value = "user-id") String socialId,@PathVariable("issue") String issue,@PathVariable("type") ApiType type) {
         String userId = "testId";
         System.out.println(type);
-        return ResponseEntity.ok(SuccessResponse.create(GET_MY_CONTENTS.getMessage(), this.contentsService.getContentsIssue(  socialId, type,  issue)));
+        return ResponseEntity.ok(SuccessResponse.create(GET_CONTENTS_SUCCESS.getMessage(), this.contentsService.getContentsIssue(  socialId, type,  issue)));
     }//@RequestHeader(value = "user-id") String socialId
 }
