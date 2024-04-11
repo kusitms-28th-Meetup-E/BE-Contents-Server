@@ -1,19 +1,5 @@
 version: '3'
 services:
-  apigateway:
-    image: gwangjang/apigateway
-    ports:
-      - 8888:8888
-    networks:
-      - msa-network
-
-  eureka:
-    image: gwangjang/eureka:latest
-    ports:
-      - 8761:8761
-    networks:
-      - msa-network
-
   contents:
     image: gwangjang/contents
     depends_on:
@@ -28,4 +14,4 @@ services:
 
 networks:
   msa-network:
-    external: true
+    driver: bridge
